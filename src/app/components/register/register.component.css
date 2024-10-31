@@ -1,0 +1,95 @@
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  margin: 0;
+}
+
+.register-container {
+  background-color: #225763;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  color: #41d8bf;
+  margin-bottom: 20px;
+}
+
+.register-form .form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.register-form label {
+  margin-bottom: 5px;
+  display: block;
+  color: white;
+}
+
+.register-form input,
+.register-form select {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: white;
+}
+
+.register-form input[type="file"] {
+  background-color: transparent;
+  padding: 5px;
+  color: white;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+  margin-top: 10px;
+  width: 100%;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.btn.acceso-rapido {
+  background-color: #41d8bf;
+}
+
+.btn.acceso-rapido:hover:not(:disabled) {
+  background-color: #2f89b3;
+}
+
+.btn.opciones {
+  width: auto;
+  margin: 10px 10px;
+  background-color: #2f52b3;
+}
+
+.btn.opciones:hover {
+  background-color: #472fb3;
+}
+
+.error-message {
+  color: #ff4f4f;
+  margin-top: 10px;
+}
+
+.elegir-opciones-container {
+  margin-bottom: 20px;
+}

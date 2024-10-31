@@ -1,0 +1,175 @@
+<div class="register-page">
+  <section class="register-container">
+    <h1>Registrarse</h1>
+
+    <div class="elegir-opciones-container">
+      <button
+        type="button"
+        class="btn opciones"
+        (click)="elegirOpcion('especialista')"
+      >
+        Especialista
+      </button>
+      <button
+        type="button"
+        class="btn opciones"
+        (click)="elegirOpcion('paciente')"
+      >
+        Paciente
+      </button>
+    </div>
+
+    <form *ngIf="formOpcion" (ngSubmit)="register()" class="register-form">
+      <!-- Campos comunes -->
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input
+          type="text"
+          id="nombre"
+          [(ngModel)]="formData.nombre"
+          name="nombre"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input
+          type="text"
+          id="apellido"
+          [(ngModel)]="formData.apellido"
+          name="apellido"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="edad">Edad:</label>
+        <input
+          type="number"
+          id="edad"
+          [(ngModel)]="formData.edad"
+          name="edad"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="dni">DNI:</label>
+        <input
+          type="number"
+          id="dni"
+          [(ngModel)]="formData.dni"
+          name="dni"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="formData.mail"
+          name="email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="formData.password"
+          name="password"
+          required
+        />
+      </div>
+
+      <!-- Campos específicos para paciente -->
+      <div *ngIf="formOpcion === 'paciente'" class="form-group">
+        <label for="obraSocial">Obra Social:</label>
+        <input
+          type="text"
+          id="obraSocial"
+          [(ngModel)]="formData.obraSocial"
+          name="obraSocial"
+          required
+        />
+      </div>
+
+      <!-- Campos específicos para especialista -->
+      <div *ngIf="formOpcion === 'especialista'" class="form-group">
+        <label for="especialidad">Especialidad:</label>
+        <select
+          id="especialidad"
+          [(ngModel)]="selectedEspecialidad"
+          name="especialidad"
+          required
+          (change)="onEspecialidadChange($event)"
+        >
+          <option value="">Seleccione una especialidad</option>
+          <option *ngFor="let esp of especialidades" [value]="esp">
+            {{ esp }}
+          </option>
+          <option value="otra">Otra</option>
+        </select>
+      </div>
+
+      <div *ngIf="showCustomEspecialidad" class="form-group">
+        <label for="especialidadCustom">Nueva Especialidad:</label>
+        <input
+          type="text"
+          id="especialidadCustom"
+          [(ngModel)]="formData.especialidadCustom"
+          name="especialidadCustom"
+          required
+        />
+      </div>
+
+      <!-- Carga de imágenes -->
+      <div class="form-group">
+        <label for="imagen1"
+          >Imagen de perfil {{ formOpcion === "paciente" ? "1" : "" }}:</label
+        >
+        <input
+          type="file"
+          id="imagen1"
+          (change)="onFileSelected($event, 1)"
+          accept="image/*"
+          required
+        />
+      </div>
+
+      <div *ngIf="formOpcion === 'paciente'" class="form-group">
+        <label for="imagen2">Imagen de perfil 2:</label>
+        <input
+          type="file"
+          id="imagen2"
+          (change)="onFileSelected($event, 2)"
+          accept="image/*"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn acceso-rapido" [disabled]="isLoading">
+        {{ isLoading ? "Registrando..." : "Registrarse" }}
+      </button>
+
+      <button
+        type="button"
+        (click)="navigateToLogin()"
+        class="btn acceso-rapido"
+      >
+        ¿Ya tienes una cuenta? Inicia sesión
+      </button>
+    </form>
+
+    <ng-template #elseBlock>
+      <p>Elija una opción para registrarse.</p>
+    </ng-template>
+
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  </section>
+</div>

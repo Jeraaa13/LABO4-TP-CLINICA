@@ -1,0 +1,78 @@
+/* Estilo general del login */
+.login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #225763;
+  color: white;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 100px auto;
+}
+
+h1 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  color: white;
+}
+
+.form-control {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  background-color: white;
+  color: black;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn.second-color {
+  background-color: #41d8bf;
+}
+
+.btn.second-color:hover {
+  background-color: #2f89b3;
+}
+
+.rapid-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.quick-login {
+  background-color: #225763;
+}
+
+.quick-login:hover {
+  background-color: #2f89b3;
+}
+
+.error-message {
+  color: #ff4f4f;
+  margin-top: 10px;
+}

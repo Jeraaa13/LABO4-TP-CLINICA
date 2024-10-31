@@ -1,0 +1,65 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #225763;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.quien-soy-right {
+  margin-left: auto;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.navbar a {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+  background-color: #2f89b3;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.navbar .icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.navbar .user-icon {
+  width: 30px;
+  height: 30px;
+  margin-top: 1px;
+}
+
+.navbar .user-info {
+  color: white;
+  gap: 10px;
+}
