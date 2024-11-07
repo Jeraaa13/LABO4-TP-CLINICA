@@ -12,6 +12,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptorsFromDi()), provideAnimationsAsync(),
   ],
 };

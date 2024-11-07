@@ -8,19 +8,18 @@
         class="btn opciones"
         (click)="elegirOpcion('especialista')"
       >
-        Especialista
+        <img src="public/medico.png" alt="Especialista" />
       </button>
       <button
         type="button"
         class="btn opciones"
         (click)="elegirOpcion('paciente')"
       >
-        Paciente
+        <img src="public/paciente.png" alt="Paciente" />
       </button>
     </div>
 
     <form *ngIf="formOpcion" (ngSubmit)="register()" class="register-form">
-      <!-- Campos comunes -->
       <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input
@@ -87,7 +86,6 @@
         />
       </div>
 
-      <!-- Campos específicos para paciente -->
       <div *ngIf="formOpcion === 'paciente'" class="form-group">
         <label for="obraSocial">Obra Social:</label>
         <input
@@ -99,36 +97,40 @@
         />
       </div>
 
-      <!-- Campos específicos para especialista -->
       <div *ngIf="formOpcion === 'especialista'" class="form-group">
-        <label for="especialidad">Especialidad:</label>
-        <select
-          id="especialidad"
-          [(ngModel)]="selectedEspecialidad"
-          name="especialidad"
-          required
-          (change)="onEspecialidadChange($event)"
-        >
-          <option value="">Seleccione una especialidad</option>
-          <option *ngFor="let esp of especialidades" [value]="esp">
-            {{ esp }}
-          </option>
-          <option value="otra">Otra</option>
-        </select>
+        <h3>Selecciona tus especialidades</h3>
+        <div *ngFor="let especialidad of availableEspecialidades">
+          <label>
+            <input
+              class="selectbtn"
+              type="checkbox"
+              [checked]="formData.especialidades.includes(especialidad)"
+              (change)="toggleEspecialidad(especialidad)"
+            />
+            {{ especialidad }}
+          </label>
+        </div>
+        <div>
+          <input
+            type="text"
+            [(ngModel)]="customEspecialidad"
+            name="especialidadCustom"
+            placeholder="Agregar nueva especialidad"
+          />
+          <button (click)="addCustomEspecialidad()">Agregar</button>
+        </div>
       </div>
 
       <div *ngIf="showCustomEspecialidad" class="form-group">
         <label for="especialidadCustom">Nueva Especialidad:</label>
         <input
           type="text"
-          id="especialidadCustom"
-          [(ngModel)]="formData.especialidadCustom"
-          name="especialidadCustom"
-          required
+          [(ngModel)]="customEspecialidad"
+          placeholder="Nueva Especialidad"
+          (input)="onCustomEspecialidadChange($event)"
         />
       </div>
 
-      <!-- Carga de imágenes -->
       <div class="form-group">
         <label for="imagen1"
           >Imagen de perfil {{ formOpcion === "paciente" ? "1" : "" }}:</label

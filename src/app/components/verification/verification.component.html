@@ -1,1 +1,14 @@
-<p>verification works!</p>
+<div class="verification-container">
+  <h2>Verificación de Email</h2>
+  <p>Te hemos enviado un email de verificación a tu correo.</p>
+  <p>Por favor, verifica tu email antes de iniciar sesión.</p>
+
+  <div class="actions">
+    <button (click)="reenviarEmail()" [disabled]="isLoading">
+      {{ isLoading ? "Enviando..." : "Reenviar email de verificación" }}
+    </button>
+    <button (click)="irAlLogin()">Ir al login</button>
+  </div>
+
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+</div>

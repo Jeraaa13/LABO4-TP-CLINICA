@@ -1,75 +1,121 @@
-<section class="fourth-color login-section">
-  <h1>Iniciar Sesión</h1>
+<section class="login-page">
+  <div class="login-container">
+    <!-- Contenedor del formulario -->
+    <div class="form-container">
+      <h1>Iniciar Sesión</h1>
 
-  <form (ngSubmit)="login()" class="nice-form-group">
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input
-        type="email"
-        id="email"
-        [(ngModel)]="email"
-        name="email"
-        placeholder="Email"
-        required
-        class="form-control"
-      />
+      <app-loading *ngIf="isLoading"></app-loading>
+
+      <form (ngSubmit)="login()" class="login-form">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="email"
+            name="email"
+            placeholder="Email"
+            required
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Contraseña"
+            required
+            class="form-control"
+          />
+        </div>
+
+        <button type="submit" class="btn login-btn" [disabled]="isLoading">
+          {{ isLoading ? "Iniciando sesión..." : "Iniciar sesión" }}
+        </button>
+
+        <div class="error-message" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <button
+          type="button"
+          class="btn register-btn"
+          (click)="navigateToRegister()"
+          [disabled]="isLoading"
+        >
+          Registrarse
+        </button>
+      </form>
     </div>
 
-    <div class="form-group">
-      <label for="password">Contraseña:</label>
-      <input
-        type="password"
-        id="password"
-        [(ngModel)]="password"
-        name="password"
-        placeholder="Contraseña"
-        required
-        class="form-control"
-      />
-    </div>
-
-    <button type="submit" class="btn second-color" [disabled]="isLoading">
-      {{ isLoading ? "Iniciando sesión..." : "Iniciar sesión" }}
-    </button>
-
-    <div class="error-message" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </div>
-
-    <button
-      type="button"
-      class="btn second-color"
-      (click)="navigateToRegister()"
-      [disabled]="isLoading"
-    >
-      Registrarse
-    </button>
-
-    <div class="rapid-buttons">
+    <!-- Contenedor de botones de acceso rápido -->
+    <div class="quick-access-container">
+      <!-- Pacientes -->
       <button
-        class="btn quick-login"
+        class="quick-access-btn"
         type="button"
-        (click)="loginRapido('paciente@test.com', '123123')"
+        (click)="loginRapido('paciente1toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        Acceso Paciente
+        <img src="public/usuario1.jpg" alt="Paciente 1" />
+        <span>Paciente 1</span>
       </button>
+
       <button
-        class="btn quick-login"
+        class="quick-access-btn"
         type="button"
-        (click)="loginRapido('especialista@test.com', '123123')"
+        (click)="loginRapido('paciente2toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        Acceso Especialista
+        <img src="public/usuario_2.png" alt="Paciente 2" />
+        <span>Paciente 2</span>
       </button>
+
       <button
-        class="btn quick-login"
+        class="quick-access-btn"
         type="button"
-        (click)="loginRapido('admin@admin.com', '123123')"
+        (click)="loginRapido('paciente3toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        Admin
+        <img src="public/usuario_3.png" alt="Paciente 3" />
+        <span>Paciente 3</span>
+      </button>
+
+      <!-- Especialistas -->
+      <button
+        class="quick-access-btn"
+        type="button"
+        (click)="loginRapido('especialista1toranzo@yopmail.com', '123123')"
+        [disabled]="isLoading"
+      >
+        <img src="public/especialista_1.png" alt="Especialista 1" />
+        <span>Especialista 1</span>
+      </button>
+
+      <button
+        class="quick-access-btn"
+        type="button"
+        (click)="loginRapido('especialista2toranzo@yopmail.com', '123123')"
+        [disabled]="isLoading"
+      >
+        <img src="public/especialista_2.png" alt="Especialista 2" />
+        <span>Especialista 2</span>
+      </button>
+
+      <!-- Admin -->
+      <button
+        class="quick-access-btn"
+        type="button"
+        (click)="loginRapido('admintoranzo@yopmail.com', '123123')"
+        [disabled]="isLoading"
+      >
+        <img src="public/admin.png" alt="Admin" />
+        <span>Administrador</span>
       </button>
     </div>
-  </form>
+  </div>
 </section>

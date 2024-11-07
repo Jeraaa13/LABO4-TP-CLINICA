@@ -11,8 +11,15 @@ import {
   uploadBytes,
   getDownloadURL,
 } from '@angular/fire/storage';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-import { FormsModule } from '@angular/forms';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  getDocs,
+  setDoc,
+  doc,
+} from '@angular/fire/firestore';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 interface FormData {
@@ -23,7 +30,7 @@ interface FormData {
   mail: string;
   password: string;
   obraSocial: string;
-  especialidad: string;
+  especialidades: string[];
   especialidadCustom: string;
   verificado: boolean;
   habilitado: boolean;
@@ -35,12 +42,11 @@ interface FormData {
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css',
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-  // Form data
   formData: FormData = {
     nombre: '',
     apellido: '',
@@ -49,24 +55,24 @@ export class RegisterComponent {
     mail: '',
     password: '',
     obraSocial: '',
-    especialidad: '',
+    especialidades: [],
     especialidadCustom: '',
     verificado: false,
     habilitado: false,
   };
-  especialidades: string[] = [
+  availableEspecialidades: string[] = [
     'Cardiología',
     'Dermatología',
     'Pediatría',
     'Traumatología',
     'Oftalmología',
   ];
-  selectedEspecialidad: string = '';
   showCustomEspecialidad: boolean = false;
   formOpcion: string = '';
   errorMessage: string = '';
   isLoading: boolean = false;
   selectedFiles: { [key: number]: File } = {};
+  customEspecialidad: string = '';
 
   constructor(
     private auth: Auth,
@@ -77,7 +83,6 @@ export class RegisterComponent {
 
   elegirOpcion(opcion: string) {
     this.formOpcion = opcion;
-    // Reset form data
     this.formData = {
       nombre: '',
       apellido: '',
@@ -86,28 +91,49 @@ export class RegisterComponent {
       mail: '',
       password: '',
       obraSocial: '',
-      especialidad: '',
+      especialidades: [],
       especialidadCustom: '',
       verificado: false,
       habilitado: false,
     };
-    this.selectedEspecialidad = '';
     this.showCustomEspecialidad = false;
   }
 
-  onEspecialidadChange(event: any) {
-    const value = event.target.value;
-    this.selectedEspecialidad = value;
-    this.showCustomEspecialidad = value === 'otra';
-    this.formData.especialidad = value !== 'otra' ? value : '';
-    if (value !== 'otra') {
-      this.formData.especialidadCustom = '';
+  toggleEspecialidad(especialidad: string) {
+    const index = this.formData.especialidades.indexOf(especialidad);
+    if (index > -1) {
+      // Si ya está seleccionado, eliminarlo
+      this.formData.especialidades.splice(index, 1);
+    } else {
+      // Si no está seleccionado, agregarlo
+      this.formData.especialidades.push(especialidad);
     }
   }
 
-  onFileSelected(event: any, fileNumber: number) {
-    if (event.target.files && event.target.files[0]) {
-      this.selectedFiles[fileNumber] = event.target.files[0];
+  onCustomEspecialidadChange(event: any) {
+    this.customEspecialidad = event.target.value;
+  }
+
+  addCustomEspecialidad() {
+    if (
+      this.customEspecialidad &&
+      !this.formData.especialidades.includes(this.customEspecialidad)
+    ) {
+      this.formData.especialidades.push(this.customEspecialidad);
+      const especialidadesCollection = collection(
+        this.firestore,
+        'especialidades'
+      );
+      const customEspecialidadDoc = doc(
+        especialidadesCollection,
+        this.customEspecialidad
+      );
+      setDoc(
+        customEspecialidadDoc,
+        { nombre: this.customEspecialidad },
+        { merge: true }
+      );
+      this.customEspecialidad = ''; // Reiniciar campo de entrada
     }
   }
 
@@ -129,15 +155,8 @@ export class RegisterComponent {
     }
 
     if (this.formOpcion === 'especialista') {
-      if (this.selectedEspecialidad === '') {
-        this.errorMessage = 'Por favor seleccione una especialidad';
-        return false;
-      }
-      if (
-        this.selectedEspecialidad === 'otra' &&
-        !this.formData.especialidadCustom
-      ) {
-        this.errorMessage = 'Por favor ingrese la nueva especialidad';
+      if (this.formData.especialidades.length === 0) {
+        this.errorMessage = 'Por favor seleccione al menos una especialidad';
         return false;
       }
     }
@@ -161,32 +180,24 @@ export class RegisterComponent {
         this.formData.mail,
         this.formData.password
       );
+      await this.auth.signOut();
 
       // Enviar email de verificación
       await sendEmailVerification(userCredential.user);
 
-      // Subir imágenes
       const userId = userCredential.user.uid;
       let userData = { ...this.formData };
-
-      // Establecer la especialidad correcta
-      if (this.formOpcion === 'especialista') {
-        userData.especialidad =
-          this.selectedEspecialidad === 'otra'
-            ? this.formData.especialidadCustom
-            : this.formData.especialidad;
-      }
 
       // Manejar las imágenes como antes...
       if (this.formOpcion === 'paciente') {
         if (this.selectedFiles[1] && this.selectedFiles[2]) {
           userData.imagenPerfil1 = await this.uploadImage(
             this.selectedFiles[1],
-            `pacientes/${userId}/profile1`
+            `users/${userId}/profile1`
           );
           userData.imagenPerfil2 = await this.uploadImage(
             this.selectedFiles[2],
-            `pacientes/${userId}/profile2`
+            `users/${userId}/profile2`
           );
         } else {
           throw new Error('Por favor suba las dos imágenes de perfil');
@@ -195,31 +206,45 @@ export class RegisterComponent {
         if (this.selectedFiles[1]) {
           userData.imagenPerfil = await this.uploadImage(
             this.selectedFiles[1],
-            `especialistas/${userId}/profile`
+            `users/${userId}/profile`
           );
         } else {
           throw new Error('Por favor suba la imagen de perfil');
         }
       }
 
-      // Guardar datos en Firestore con campos adicionales
-      const userCollection = collection(
-        this.firestore,
-        this.formOpcion === 'paciente' ? 'pacientes' : 'especialistas'
-      );
+      // Guardar especialidades personalizadas en Firestore si hay alguna
+      if (this.formOpcion === 'especialista') {
+        const especialidadesCollection = collection(
+          this.firestore,
+          'especialidades'
+        );
+
+        for (let especialidad of this.formData.especialidades) {
+          // Verifica si la especialidad ya está en Firestore para evitar duplicados
+          const especialidadDoc = doc(especialidadesCollection, especialidad);
+          await setDoc(
+            especialidadDoc,
+            { nombre: especialidad },
+            { merge: true }
+          );
+        }
+      }
+
+      // Guardar datos del usuario en Firestore
+      const userCollection = collection(this.firestore, 'users');
 
       await addDoc(userCollection, {
         ...userData,
         tipo: this.formOpcion,
         uid: userId,
         emailVerified: false,
-        isApproved: this.formOpcion === 'paciente' ? true : false, // Los especialistas necesitan aprobación
+        isApproved: this.formOpcion === 'paciente' ? true : false,
         createdAt: new Date(),
       });
 
-      // Cerrar sesión después del registro para forzar la verificación
+      sessionStorage.setItem('unverifiedEmail', this.formData.mail);
       await this.auth.signOut();
-
       this.router.navigate(['/verificacion']);
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
@@ -230,6 +255,34 @@ export class RegisterComponent {
       console.error('Registro fallido', error);
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  async addSpecialidadesToFirestore(especialidades: string[]) {
+    const especialidadesCollection = collection(
+      this.firestore,
+      'especialidades'
+    );
+    const existingEspecialidadesSnapshot = await getDocs(
+      especialidadesCollection
+    );
+
+    const existingEspecialidades = existingEspecialidadesSnapshot.docs.map(
+      (doc) => doc.data()['nombre']
+    );
+
+    const newEspecialidades = especialidades.filter(
+      (esp) => !existingEspecialidades.includes(esp)
+    );
+
+    for (const especialidad of newEspecialidades) {
+      await addDoc(especialidadesCollection, { nombre: especialidad });
+    }
+  }
+
+  onFileSelected(event: any, fileNumber: number) {
+    if (event.target.files && event.target.files[0]) {
+      this.selectedFiles[fileNumber] = event.target.files[0];
     }
   }
 

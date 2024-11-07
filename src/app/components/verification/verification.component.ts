@@ -1,79 +1,76 @@
-import { Component } from '@angular/core';
-import { Auth, sendEmailVerification } from '@angular/fire/auth';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import {
+  Auth,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+} from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-verification',
   standalone: true,
+  templateUrl: 'verification.component.html',
+  styleUrl: 'verification.component.css',
   imports: [CommonModule],
-  template: `
-    <div class="verification-container">
-      <h2>Verificación de Email</h2>
-      <p>Te hemos enviado un email de verificación a tu correo.</p>
-      <p>Por favor, verifica tu email antes de iniciar sesión.</p>
-
-      <div class="actions">
-        <button (click)="reenviarEmail()" [disabled]="isLoading">
-          {{ isLoading ? 'Enviando...' : 'Reenviar email de verificación' }}
-        </button>
-        <button (click)="irAlLogin()">Ir al login</button>
-      </div>
-
-      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-    </div>
-  `,
-  styles: [
-    `
-      .verification-container {
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 20px;
-        text-align: center;
-      }
-      .actions {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
-      }
-      button {
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      button:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-      }
-      .error-message {
-        color: red;
-        margin-top: 10px;
-      }
-    `,
-  ],
 })
 export class VerificationComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(
+    private auth: Auth,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   async reenviarEmail() {
     try {
       this.isLoading = true;
       this.errorMessage = '';
-      const user = this.auth.currentUser;
+
+      let user = this.auth.currentUser;
+
+      // Debug: Check session storage immediately
+      const storedEmail = sessionStorage.getItem('unverifiedEmail');
+      console.log('Retrieved stored email:', storedEmail);
+
+      // Re-authenticate if no active user
+      if (!user) {
+        console.log('No active user; using session-stored email.');
+        if (storedEmail) {
+          const password = prompt(
+            'Por favor ingresa tu contraseña para reenviar el email de verificación:'
+          );
+          if (password) {
+            const userCredential = await signInWithEmailAndPassword(
+              this.auth,
+              storedEmail,
+              password
+            );
+            user = userCredential.user;
+            this.auth.signOut();
+          } else {
+            this.mostrarMensajeError('Reautenticación cancelada.');
+            return;
+          }
+        } else {
+          this.mostrarMensajeError(
+            'No hay usuario activo y no se encontró email almacenado.'
+          );
+          return;
+        }
+      }
 
       if (user) {
         await sendEmailVerification(user);
-        alert('Email de verificación reenviado');
+        this.mostrarMensajeExito('Email de verificación reenviado');
       } else {
-        this.errorMessage = 'No hay usuario activo';
+        this.mostrarMensajeError('No hay usuario activo');
       }
     } catch (error: any) {
-      this.errorMessage = error.message || 'Error al reenviar el email';
+      this.mostrarMensajeError(error.message || 'Error al reenviar el email');
     } finally {
       this.isLoading = false;
     }
@@ -81,5 +78,19 @@ export class VerificationComponent {
 
   irAlLogin() {
     this.router.navigate(['/login']);
+  }
+
+  mostrarMensajeExito(mensaje: string) {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 3000,
+      panelClass: ['success-snackbar'],
+    });
+  }
+
+  mostrarMensajeError(mensaje: string) {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 3000,
+      panelClass: ['error-snackbar'],
+    });
   }
 }

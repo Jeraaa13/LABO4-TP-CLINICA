@@ -1,65 +1,32 @@
 .navbar {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background-color: #225763;
-  padding: 10px 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.quien-soy-right {
-  margin-left: auto;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.navbar a {
-  display: flex;
-  align-items: center;
-  color: white;
-  text-decoration: none;
-  padding: 10px;
-  transition: background-color 0.3s;
-}
-
-.navbar a:hover {
-  background-color: #2f89b3;
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
   align-items: center;
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
-  padding: 10px;
-  margin-right: 10px;
+  margin-left: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: var(--transition);
 }
 
-.navbar .icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-.navbar .user-icon {
-  width: 30px;
-  height: 30px;
-  margin-top: 1px;
-}
-
-.navbar .user-info {
+.user-info {
   color: white;
-  gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }

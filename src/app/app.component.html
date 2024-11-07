@@ -9,8 +9,26 @@
     <a *ngIf="!(authService.user$ | async)" (click)="navigateTo('/register')">
       Registro
     </a>
+    <a
+      *ngIf="(authService.user$ | async) && isPaciente == true"
+      (click)="navigateTo('/mis-turnos')"
+    >
+      Mis Turnos
+    </a>
+    <a
+      *ngIf="(authService.user$ | async) && isEspecialista == true"
+      (click)="navigateTo('/turnos-especialista')"
+    >
+      Mis Turnos
+    </a>
+    <a
+      *ngIf="(authService.user$ | async) && isPaciente == true"
+      (click)="navigateTo('/solicitar-turno')"
+    >
+      Solicitar Turno
+    </a>
     <a *ngIf="authService.user$ | async" (click)="logout()"> Cerrar Sesión </a>
   </div>
 </div>
 
-<router-outlet />
+<router-outlet></router-outlet>

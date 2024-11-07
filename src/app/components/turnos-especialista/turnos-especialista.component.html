@@ -1,0 +1,41 @@
+<div>
+  <input
+    type="text"
+    [formControl]="filtroControl"
+    placeholder="Buscar por especialidad o paciente"
+  />
+
+  <div *ngFor="let turno of turnosFiltrados">
+    <p>Especialidad: {{ turno.especialidad }}</p>
+    <p>Paciente: {{ turno.pacienteNombre }}</p>
+    <p>Estado: {{ turno.estado }}</p>
+
+    <button
+      *ngIf="turno.estado === 'Aceptado'"
+      (click)="cancelarTurno(turno.id)"
+    >
+      Cancelar
+    </button>
+    <button
+      *ngIf="turno.estado === 'Pendiente'"
+      (click)="rechazarTurno(turno.id)"
+    >
+      Rechazar
+    </button>
+    <button
+      *ngIf="turno.estado === 'Pendiente'"
+      (click)="aceptarTurno(turno.id)"
+    >
+      Aceptar
+    </button>
+    <button
+      *ngIf="turno.estado === 'Aceptado'"
+      (click)="finalizarTurno(turno.id)"
+    >
+      Finalizar
+    </button>
+    <button *ngIf="turno.resena" (click)="verResena(turno.id)">
+      Ver Reseña
+    </button>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="solicitar-turno-container">
+  <h2>Solicitar Turno</h2>
+
+  <form [formGroup]="turnoForm" (ngSubmit)="solicitarTurno()">
+    <label for="especialidad">Especialidad</label>
+    <div class="especialidades">
+      <button
+        *ngFor="let especialidad of especialidades"
+        [ngClass]="{ selected: especialidadSeleccionada === especialidad }"
+        (click)="seleccionarEspecialidad(especialidad)"
+      >
+        {{ especialidad }}
+      </button>
+    </div>
+
+    <label for="especialista">Especialista</label>
+    <div class="especialistas">
+      <button
+        *ngFor="let especialista of especialistas"
+        type="button"
+        [class.selected]="
+          especialista.id === turnoForm.get('especialista')?.value
+        "
+        (click)="seleccionarEspecialista(especialista)"
+      >
+        {{ especialista.nombre + " " + especialista.apellido }}
+      </button>
+    </div>
+
+    <label for="fecha">Fecha y Horario</label>
+    <div *ngIf="fechasDisponibles.length > 0">
+      <ul>
+        <li *ngFor="let fecha of fechasDisponibles">
+          <button
+            type="button"
+            (click)="seleccionarFecha(fecha)"
+            [class.selected-date]="fecha === fechaSeleccionada"
+          >
+            {{ fecha | date : "dd/MM/yyyy HH:mm" }}
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="fechaSeleccionada">
+      <p>
+        Fecha seleccionada: {{ fechaSeleccionada | date : "dd/MM/yyyy HH:mm" }}
+      </p>
+    </div>
+
+    <button type="submit" [disabled]="!turnoForm.valid">Solicitar Turno</button>
+  </form>
+</div>

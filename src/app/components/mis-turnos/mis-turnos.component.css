@@ -1,0 +1,21 @@
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.turno-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+.estado {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+.turno-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}

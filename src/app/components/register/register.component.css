@@ -1,95 +1,125 @@
+/* Contenedor del registro */
 .register-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  margin: 0;
+  padding: 2rem;
 }
 
 .register-container {
-  background-color: #225763;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 500px;
-  width: 100%;
-  text-align: center;
 }
 
-h1 {
-  font-size: 24px;
-  color: #41d8bf;
-  margin-bottom: 20px;
+.register-container h1 {
+  color: #2c7da0;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-.register-form .form-group {
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.register-form label {
-  margin-bottom: 5px;
-  display: block;
-  color: white;
-}
-
-.register-form input,
-.register-form select {
-  padding: 10px;
-  width: 100%;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  background-color: white;
-}
-
-.register-form input[type="file"] {
-  background-color: transparent;
-  padding: 5px;
-  color: white;
-}
-
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  color: white;
-  margin-top: 10px;
-  width: 100%;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.btn:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.btn.acceso-rapido {
-  background-color: #41d8bf;
-}
-
-.btn.acceso-rapido:hover:not(:disabled) {
-  background-color: #2f89b3;
+/* Botones de opciones */
+.elegir-opciones-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
 }
 
 .btn.opciones {
-  width: auto;
-  margin: 10px 10px;
-  background-color: #2f52b3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2a9d8f;
+  color: white;
+  border: none;
+  padding: 3.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn.opciones:hover {
-  background-color: #472fb3;
+  background-color: #238b7a;
+}
+
+.btn.opciones img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 0.5rem;
+  object-fit: cover;
+}
+
+/* Estilo del formulario de registro */
+.register-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.register-form .form-group label {
+  display: block;
+  color: #2b2d42;
+  margin-bottom: 0.5rem;
+}
+
+.register-form .form-group input,
+.register-form .form-group select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.register-form .form-group input:focus,
+.register-form .form-group select:focus {
+  border-color: #89c2d9;
+  box-shadow: 0 0 0 3px rgba(137, 194, 217, 0.2);
+  outline: none;
+}
+
+.form-group input[type="file"] {
+  display: block;
+}
+
+.register-form .form-group img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #2c7da0;
+  margin-top: 0.5rem;
+}
+
+/* Botones de registro y acceso rápido */
+.btn.acceso-rapido {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #2c7da0;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.btn.acceso-rapido:hover {
+  background-color: #61a5c2;
 }
 
 .error-message {
-  color: #ff4f4f;
-  margin-top: 10px;
+  color: #e63946;
+  background-color: rgba(230, 57, 70, 0.1);
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-top: 1rem;
 }
 
-.elegir-opciones-container {
-  margin-bottom: 20px;
+.selectbtn {
+  margin: 0px;
+  width: 20px !important;
 }

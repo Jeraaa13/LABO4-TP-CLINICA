@@ -1,0 +1,60 @@
+<div *ngIf="turnos.length > 0; else sinTurnos">
+  <h3>Mis Turnos</h3>
+
+  <div class="filters">
+    <label>
+      Filtrar por Especialidad:
+      <input
+        type="text"
+        [(ngModel)]="especialidadFiltro"
+        placeholder="Ingrese la especialidad"
+      />
+    </label>
+    <label>
+      Filtrar por Especialista:
+      <input
+        type="text"
+        [(ngModel)]="especialistaFiltro"
+        placeholder="Ingrese el nombre del especialista"
+      />
+    </label>
+  </div>
+
+  <div *ngFor="let turno of turnos">
+    <div>
+      <p>Especialidad: {{ turno.especialidad }}</p>
+      <p>
+        Especialista: {{ turno.especialistaNombre }}
+        {{ turno.especialistaApellido }}
+      </p>
+      <p>Fecha: {{ turno.fecha | date : "dd/MM/yyyy HH:mm" }}</p>
+      <p>Estado: {{ turno.estado }}</p>
+    </div>
+
+    <button *ngIf="turno.estado === 'Pendiente'" (click)="cancelarTurno(turno)">
+      Cancelar turno
+    </button>
+
+    <button *ngIf="turno.comentario" (click)="verResena(turno)">
+      Ver reseña
+    </button>
+
+    <button
+      *ngIf="turno.estado === 'Realizado' && turno.resena"
+      (click)="completarEncuesta(turno)"
+    >
+      Completar encuesta
+    </button>
+
+    <button
+      *ngIf="turno.estado === 'Realizado'"
+      (click)="calificarAtencion(turno)"
+    >
+      Calificar Atención
+    </button>
+  </div>
+</div>
+
+<ng-template #sinTurnos>
+  <p>No tienes turnos registrados.</p>
+</ng-template>
