@@ -84,5 +84,12 @@ export const routes: Routes = [
         (c) => c.PacientesComponent
       ),
   },
+  {
+    path: 'estadisticas',
+    loadComponent: () =>
+      import('./components/admin-statistics/admin-statistics.component').then(
+        (c) => c.AdminStatisticsComponent
+      ),
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

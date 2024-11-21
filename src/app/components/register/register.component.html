@@ -19,7 +19,6 @@
       </button>
     </div>
 
-    <!-- Formulario para Especialista -->
     <form
       *ngIf="formOpcion === 'especialista'"
       [formGroup]="especialistaForm"
@@ -104,6 +103,11 @@
         />
       </div>
 
+      <re-captcha
+        (resolved)="onCaptchaResolved($event)"
+        [siteKey]="'6LeJpIUqAAAAAONyGxGvRoy5XnpLNK9Qx7VXjEAK'"
+      ></re-captcha>
+
       <button
         type="submit"
         class="btn acceso-rapido"
@@ -185,6 +189,11 @@
           required
         />
       </div>
+
+      <re-captcha
+        (resolved)="onCaptchaResolved($event)"
+        [siteKey]="'6LeJpIUqAAAAAONyGxGvRoy5XnpLNK9Qx7VXjEAK'"
+      ></re-captcha>
 
       <button
         type="submit"

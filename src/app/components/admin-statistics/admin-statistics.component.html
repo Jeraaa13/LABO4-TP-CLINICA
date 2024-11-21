@@ -1,0 +1,35 @@
+<div class="admin-statistics-container">
+  <h2>Estadísticas de la Clínica</h2>
+
+  <div class="charts-container">
+    <div>
+      <canvas id="loginLogsChart"></canvas>
+    </div>
+
+    <div class="chart-section">
+      <h3>Turnos por Especialidad</h3>
+      <canvas id="specialtyChart"></canvas>
+    </div>
+
+    <div class="chart-section">
+      <h3>Turnos Diarios</h3>
+      <canvas id="dailyChart"></canvas>
+    </div>
+
+    <div class="chart-section">
+      <h3>Turnos por Médico</h3>
+      <div class="filter-container">
+        <label for="startDate">Fecha de Inicio:</label>
+        <input type="date" id="startDate" [(ngModel)]="startDate" />
+
+        <label for="endDate">Fecha de Fin:</label>
+        <input type="date" id="endDate" [(ngModel)]="endDate" />
+
+        <button (click)="applyDateFilter()">Aplicar Filtro</button>
+      </div>
+
+      <canvas id="requestedChart"></canvas>
+      <canvas id="completedChart"></canvas>
+    </div>
+  </div>
+</div>

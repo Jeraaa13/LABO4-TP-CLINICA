@@ -5,4 +5,5 @@ export const firebaseConfig = {
   storageBucket: 'tp-clinica-106d7.appspot.com',
   messagingSenderId: '271631417841',
   appId: '1:271631417841:web:0d92746fce06b81b5b4450',
+  recaptchaSiteKey: '6LeJpIUqAAAAAONyGxGvRoy5XnpLNK9Qx7VXjEAK',
 };

@@ -45,6 +45,12 @@
       Usuarios
     </a>
     <a
+      *ngIf="(authService.user$ | async) && isAdmin == true"
+      (click)="navigateTo('/estadisticas')"
+    >
+      Estadisticas
+    </a>
+    <a
       *ngIf="(authService.user$ | async) && isEspecialista == true"
       (click)="navigateTo('/pacientes')"
     >

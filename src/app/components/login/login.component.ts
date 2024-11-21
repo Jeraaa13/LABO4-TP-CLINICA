@@ -4,6 +4,7 @@ import {
   Auth,
   signInWithEmailAndPassword,
   sendEmailVerification,
+  user,
 } from '@angular/fire/auth';
 import {
   Firestore,
@@ -99,6 +100,8 @@ export class LoginComponent {
         return;
       }
 
+      this.registrarLog(userData);
+
       this.router.navigate(['/home']);
     } catch (error: any) {
       console.error('Login error', error);
@@ -117,6 +120,7 @@ export class LoginComponent {
     try {
       const logRef = collection(this.firestore, 'logs');
       await addDoc(logRef, {
+        usuarioId: userData.uid,
         email: userData.email,
         fechaIngreso: new Date(),
         tipo: userData.tipo,
