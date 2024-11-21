@@ -8,8 +8,10 @@
       <p *ngIf="tipo == 'especialista'">
         <strong>Paciente:</strong> {{ turno.especialista }}
       </p>
-      <p><strong>Fecha:</strong> {{ turno.fecha | date : "short" }}</p>
-      <p><strong>Estado:</strong> {{ turno.estado }}</p>
+      <p><strong>Fecha:</strong> {{ turno.fecha | formatoFecha }}</p>
+      <p appResaltarTexto>
+        <strong>Estado:</strong> {{ turno.estado | capitalizar }}
+      </p>
     </div>
   </div>
 

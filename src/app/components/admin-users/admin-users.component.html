@@ -11,11 +11,14 @@
           class="rounded-full"
           alt="Profile picture"
         />
-        <p><strong>Nombre:</strong> {{ user.nombre }} {{ user.apellido }}</p>
+        <p>
+          <strong>Nombre:</strong> {{ user.nombre | capitalizar }}
+          {{ user.apellido | capitalizar }}
+        </p>
         <p><strong>Email:</strong> {{ user.mail }}</p>
         <p><strong>DNI:</strong> {{ user.dni }}</p>
         <p><strong>Especialidades:</strong> {{ user.especialidades }}</p>
-        <p>
+        <p appResaltarTexto>
           <strong>Estado:</strong>
           {{ user.isApproved ? "Aprobado" : "Pendiente" }}
         </p>

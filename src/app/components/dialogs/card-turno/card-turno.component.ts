@@ -8,11 +8,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HistoriaClinicaModalComponent } from '../historia-clinica-modal/historia-clinica-modal.component';
 import { HistoriaClinicaService } from '../../../services/historia-clinica.service';
+import { FormatoFechaPipe } from '../../../pipes/formato-fecha.pipe';
+import { CapitalizarPipe } from '../../../pipes/capitalizar.pipe';
 
 @Component({
   selector: 'app-card-turno',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatDialogModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    FormatoFechaPipe,
+    CapitalizarPipe,
+  ],
   templateUrl: './card-turno.component.html',
   styleUrl: './card-turno.component.css',
 })

@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FormatoFechaPipe } from '../../pipes/formato-fecha.pipe';
 
 interface Especialista {
   id: string;
@@ -58,7 +59,7 @@ interface Horario {
 @Component({
   selector: 'app-solicitar-turno',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, FormatoFechaPipe],
   templateUrl: './solicitar-turno.component.html',
   styleUrls: ['./solicitar-turno.component.css'],
 })

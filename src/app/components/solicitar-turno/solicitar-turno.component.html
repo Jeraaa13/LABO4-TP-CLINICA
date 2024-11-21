@@ -54,7 +54,7 @@
             [class.selected]="fechaSeleccionada === fecha.fecha"
             (click)="seleccionarFecha(fecha)"
           >
-            {{ fecha.fecha | date : "dd-MM EEE" }}
+            {{ fecha.fecha | formatoFecha }}
           </button>
         </div>
       </div>

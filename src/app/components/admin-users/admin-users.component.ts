@@ -29,6 +29,7 @@ import {
   doc,
   setDoc,
 } from '@angular/fire/firestore';
+import { CapitalizarPipe } from '../../pipes/capitalizar.pipe';
 
 interface UserData {
   uid: string;
@@ -51,7 +52,7 @@ interface UserData {
 @Component({
   selector: 'app-admin-users',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, CapitalizarPipe],
   templateUrl: 'admin-users.component.html',
   styleUrls: ['admin-users.component.css'],
 })
