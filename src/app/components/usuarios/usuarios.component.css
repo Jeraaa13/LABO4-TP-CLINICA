@@ -1,0 +1,64 @@
+.historias-clinicas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.no-historias {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: var(--background-color);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.no-historias mat-icon {
+  font-size: 4rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.historias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.historia-card {
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.historia-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.registro-panel {
+  margin-bottom: 0.5rem;
+}
+
+.registro-detalle {
+  padding: 1rem;
+}
+
+.datos-fijos,
+.datos-adicionales {
+  margin-bottom: 1rem;
+}
+
+.resena {
+  background-color: rgba(44, 125, 160, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

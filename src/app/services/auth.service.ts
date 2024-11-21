@@ -18,11 +18,9 @@ export class AuthService {
   user$: Observable<User | null>;
 
   constructor(private auth: Auth, private firestore: Firestore) {
-    // Observe the auth state and fetch user data from Firestore if a user is logged in
     this.user$ = new Observable<User | null>((observer) => {
       this.auth.onAuthStateChanged(async (firebaseUser) => {
         if (firebaseUser) {
-          // Create a Firestore query to retrieve the user data based on UID
           const usersRef = collection(this.firestore, 'users');
           const q = query(usersRef, where('uid', '==', firebaseUser.uid));
           const querySnapshot = await getDocs(q);
@@ -30,7 +28,6 @@ export class AuthService {
           if (!querySnapshot.empty) {
             const userData = querySnapshot.docs[0].data();
 
-            // Construct the custom user object
             const customUser: User = {
               uid: firebaseUser.uid,
               email: firebaseUser.email,
@@ -54,10 +51,10 @@ export class AuthService {
 
             observer.next(customUser);
           } else {
-            observer.next(null); // No user document found
+            observer.next(null);
           }
         } else {
-          observer.next(null); // No user logged in
+          observer.next(null);
         }
       });
     });

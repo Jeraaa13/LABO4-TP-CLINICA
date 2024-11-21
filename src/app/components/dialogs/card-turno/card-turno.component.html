@@ -1,0 +1,133 @@
+<div class="turnos-container">
+  <div class="turnos-header">
+    <div class="turnos-info">
+      <p><strong>Especialidad:</strong> {{ turno.especialidad }}</p>
+      <p *ngIf="tipo == 'paciente'">
+        <strong>Especialista:</strong> {{ turno.especialista }}
+      </p>
+      <p *ngIf="tipo == 'especialista'">
+        <strong>Paciente:</strong> {{ turno.especialista }}
+      </p>
+      <p><strong>Fecha:</strong> {{ turno.fecha | date : "short" }}</p>
+      <p><strong>Estado:</strong> {{ turno.estado }}</p>
+    </div>
+  </div>
+
+  <div
+    *ngIf="turno.estado === 'cancelado' && turno.comentarioCancelacion"
+    class="comentario-cancelacion"
+  >
+    <p>
+      <strong>Motivo de Cancelación:</strong> {{ turno.comentarioCancelacion }}
+    </p>
+  </div>
+
+  <div
+    *ngIf="
+      calificacion !== null && tipo != 'admin' && turno.estado != 'cancelado'
+    "
+    class="turnos-calificacion"
+  >
+    <p><strong>Calificación:</strong> {{ calificacion }}</p>
+    <p><strong>Comentario:</strong> {{ comentario }}</p>
+  </div>
+
+  <div class="turnos-buttons">
+    <!-- Especialista -->
+    <button
+      *ngIf="['pendiente'].includes(turno.estado) && tipo == 'especialista'"
+      class="btn-aceptar"
+      (click)="aceptarTurno(turno)"
+    >
+      Aceptar Turno
+    </button>
+
+    <button
+      *ngIf="['pendiente'].includes(turno.estado) && tipo == 'especialista'"
+      class="btn-rechazar"
+      (click)="rechazarTurno(turno)"
+    >
+      Rechazar Turno
+    </button>
+
+    <button
+      *ngIf="['aceptado'].includes(turno.estado) && tipo == 'especialista'"
+      class="btn-finalizar"
+      (click)="finalizarTurno()"
+    >
+      Finalizar Turno
+    </button>
+
+    <!-- Paciente -->
+    <button
+      *ngIf="turno.resena && tipo != 'admin'"
+      class="btn-ver-resena"
+      (click)="this.turnosService.verResena(turno)"
+    >
+      Ver Reseña
+    </button>
+
+    <button
+      *ngIf="turno.encuesta && tipo != 'admin'"
+      class="btn-ver-resena"
+      (click)="this.turnosService.verEncuesta(turno)"
+    >
+      Ver Encuesta
+    </button>
+
+    <button
+      *ngIf="
+        !turno.calificado && turno.estado == 'realizado' && tipo != 'admin'
+      "
+      class="btn-calificar"
+      (click)="mostrarFormularioCalificacion = !mostrarFormularioCalificacion"
+    >
+      Calificar Atención
+    </button>
+
+    <!-- Admin -->
+    <button
+      *ngIf="turno.estado == 'aceptado' || turno.estado == 'pendiente'"
+      class="btn-cancelar"
+      (click)="this.turnosService.cancelarTurno(turno)"
+    >
+      Cancelar Turno
+    </button>
+
+    <button
+      *ngIf="
+        turno.estado === 'realizado' &&
+        turno.resena &&
+        !turno.encuesta &&
+        tipo == 'paciente'
+      "
+      class="btn-completar-encuesta"
+      (click)="turnosService.completarEncuesta(turno)"
+    >
+      Completar Encuesta
+    </button>
+  </div>
+
+  <div *ngIf="mostrarFormularioCalificacion" class="calificacion-form">
+    <textarea
+      [(ngModel)]="comentario"
+      placeholder="Deja un comentario sobre la atención"
+    >
+    </textarea>
+
+    <input
+      type="number"
+      [(ngModel)]="calificacion"
+      min="1"
+      max="5"
+      placeholder="Calificación (1-5)"
+    />
+
+    <button
+      class="btn-enviar-calificacion"
+      (click)="guardarCalificacion(turno.id, comentario, calificacion)"
+    >
+      Enviar Calificación
+    </button>
+  </div>
+</div>

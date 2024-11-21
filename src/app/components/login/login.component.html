@@ -1,6 +1,5 @@
 <section class="login-page">
   <div class="login-container">
-    <!-- Contenedor del formulario -->
     <div class="form-container">
       <h1>Iniciar Sesión</h1>
 
@@ -52,16 +51,14 @@
       </form>
     </div>
 
-    <!-- Contenedor de botones de acceso rápido -->
     <div class="quick-access-container">
-      <!-- Pacientes -->
       <button
         class="quick-access-btn"
         type="button"
         (click)="loginRapido('paciente1toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        <img src="public/usuario1.jpg" alt="Paciente 1" />
+        <img src="public/users/usuario1.png" alt="Paciente 1" />
         <span>Paciente 1</span>
       </button>
 
@@ -71,7 +68,7 @@
         (click)="loginRapido('paciente2toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        <img src="public/usuario_2.png" alt="Paciente 2" />
+        <img src="public/users/usuario_2.png" alt="Paciente 2" />
         <span>Paciente 2</span>
       </button>
 
@@ -81,18 +78,17 @@
         (click)="loginRapido('paciente3toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        <img src="public/usuario_3.png" alt="Paciente 3" />
+        <img src="public/users/usuario_3.png" alt="Paciente 3" />
         <span>Paciente 3</span>
       </button>
 
-      <!-- Especialistas -->
       <button
         class="quick-access-btn"
         type="button"
         (click)="loginRapido('especialista1toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        <img src="public/especialista_1.png" alt="Especialista 1" />
+        <img src="public/users/especialista_1.png" alt="Especialista 1" />
         <span>Especialista 1</span>
       </button>
 
@@ -102,18 +98,17 @@
         (click)="loginRapido('especialista2toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        <img src="public/especialista_2.png" alt="Especialista 2" />
+        <img src="public/users/especialista_2.png" alt="Especialista 2" />
         <span>Especialista 2</span>
       </button>
 
-      <!-- Admin -->
       <button
         class="quick-access-btn"
         type="button"
-        (click)="loginRapido('admintoranzo@yopmail.com', '123123')"
+        (click)="loginRapido('admin9toranzo@yopmail.com', '123123')"
         [disabled]="isLoading"
       >
-        <img src="public/admin.png" alt="Admin" />
+        <img src="public/users/admin.png" alt="Admin" />
         <span>Administrador</span>
       </button>
     </div>

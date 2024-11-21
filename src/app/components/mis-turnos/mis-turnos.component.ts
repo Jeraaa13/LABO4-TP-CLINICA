@@ -1,98 +1,187 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { TurnosService } from '../../services/turnos.service';
 import { AuthService } from '../../services/auth.service';
+import { CardTurnoComponent } from '../dialogs/card-turno/card-turno.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FiltroTurnosPipe } from '../../pipes/filtro-turnos.pipe';
-import { Timestamp } from '@angular/fire/firestore';
+import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+import {
+  doc,
+  Firestore,
+  setDoc,
+  Timestamp,
+  updateDoc,
+} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-mis-turnos',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, FiltroTurnosPipe],
+  imports: [CardTurnoComponent, CommonModule, FormsModule],
   templateUrl: './mis-turnos.component.html',
   styleUrls: ['./mis-turnos.component.scss'],
 })
 export class MisTurnosComponent implements OnInit {
   turnos: any[] = [];
+  turnosFiltrados: any[] = [];
   pacienteId: string | null = null;
   especialidadFiltro = '';
   especialistaFiltro = '';
+  comentarioCancelacion = '';
+  turnoSeleccionado: any = null;
+  especialidadesUnicas: string[] = [];
+  especialistasUnicos: string[] = [];
+  filtroGeneral = '';
 
   constructor(
     private turnosService: TurnosService,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private firestore: Firestore
   ) {}
 
   async ngOnInit() {
     const user = await this.authService.getUser();
     if (user) {
-      const email = user.email!;
-      this.pacienteId = await this.turnosService.obtenerUidPacientePorEmail(
-        email
-      );
-      if (this.pacienteId) {
-        this.turnosService
-          .obtenerTurnosPaciente(this.pacienteId)
-          .subscribe(async (turnos) => {
-            this.turnos = await Promise.all(
-              turnos.map(async (turno) => {
-                const fecha =
-                  turno.fecha instanceof Timestamp
-                    ? turno.fecha.toDate()
-                    : turno.fecha;
-                const especialista =
-                  await this.turnosService.obtenerEspecialistaPorId(
-                    turno.especialista
-                  );
-                return {
-                  ...turno,
-                  fecha,
-                  nombreEspecialista: especialista
-                    ? especialista.nombre
-                    : 'N/A',
-                  apellidoEspecialista: especialista
-                    ? especialista.apellido
-                    : 'N/A',
-                  especialidad: especialista
-                    ? especialista.especialidad
-                    : 'N/A',
-                };
-              })
-            );
-          });
-      }
-    } else {
-      console.log('No hay usuario logueado');
+      this.cargarTurnos(user.email!);
     }
   }
 
-  cancelarTurno(turno: any) {
-    const comentario = prompt('Escribe el motivo de la cancelación:');
-    if (comentario) {
-      this.turnosService.cancelarTurno(turno.id, comentario).then(() => {
-        turno.estado = 'Cancelado';
+  private async cargarTurnos(email: string) {
+    this.pacienteId = await this.turnosService.obtenerUidPacientePorEmail(
+      email
+    );
+
+    if (this.pacienteId) {
+      this.turnosService
+        .obtenerTurnosPaciente(this.pacienteId)
+        .subscribe(async (turnos) => {
+          this.turnos = await Promise.all(
+            turnos.map(async (turno) => {
+              const especialista =
+                await this.turnosService.obtenerEspecialistaPorId(
+                  turno.especialista
+                );
+              const historiaClinica =
+                await this.turnosService.obtenerHistoriaClinicaParaTurno(turno);
+
+              return {
+                ...turno,
+                fecha:
+                  turno.fecha instanceof Timestamp
+                    ? turno.fecha.toDate()
+                    : turno.fecha,
+                especialistaId: especialista,
+                especialista: especialista
+                  ? `${especialista.nombre} ${especialista.apellido}`
+                  : 'Especialista no encontrado',
+                historiaClinica: historiaClinica,
+              };
+            })
+          );
+
+          this.actualizarFiltros();
+          this.aplicarFiltros();
+        });
+    }
+  }
+
+  private actualizarFiltros() {
+    this.especialidadesUnicas = Array.from(
+      new Set(this.turnos.map((t) => t.especialidad))
+    );
+    this.especialistasUnicos = Array.from(
+      new Set(
+        this.turnos.map(
+          (t) => `${t.nombreEspecialista} ${t.apellidoEspecialista}`
+        )
+      )
+    );
+  }
+
+  verResena(turno: any) {
+    console.log(turno);
+    if (turno.resena) {
+      Swal.fire({
+        title: 'Reseña del Turno',
+        text: turno.resena,
+        icon: 'info',
+        confirmButtonText: 'Cerrar',
+      });
+    } else {
+      this.snackBar.open('Este turno no tiene reseña', 'Cerrar', {
+        duration: 3000,
       });
     }
   }
 
-  verResena(turno: any) {
-    alert(`Reseña: ${turno.resena}`);
+  filtrarPorEspecialidad(especialidad: string) {
+    this.especialidadFiltro =
+      this.especialidadFiltro === especialidad ? '' : especialidad;
+    this.aplicarFiltros();
   }
 
-  completarEncuesta(turno: any) {
-    const encuesta = prompt('Escribe tu encuesta sobre la atención recibida:');
-    if (encuesta) {
-      this.turnosService.guardarEncuesta(turno.id, encuesta);
-    }
+  filtrarPorEspecialista(especialista: string) {
+    this.especialistaFiltro =
+      this.especialistaFiltro === especialista ? '' : especialista;
+    this.aplicarFiltros();
   }
 
-  calificarAtencion(turno: any) {
-    const calificacion = prompt(
-      'Escribe tu opinión sobre la atención del especialista:'
-    );
-    if (calificacion) {
-      this.turnosService.calificarAtencion(turno.id, calificacion);
+  limpiarFiltros() {
+    this.especialidadFiltro = '';
+    this.especialistaFiltro = '';
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros() {
+    if (!this.filtroGeneral) {
+      this.turnosFiltrados = this.turnos;
+      return;
     }
+
+    const filtroNormalizado = this.filtroGeneral.toLowerCase().trim();
+
+    this.turnosFiltrados = this.turnos.filter((turno) => {
+      // Campos básicos para búsqueda
+      const camposBusqueda = [
+        turno.especialidad,
+        turno.especialista,
+        turno.estado,
+        turno.resena,
+        turno.comentarioCancelacion,
+      ];
+
+      // Verificar coincidencia en campos básicos
+      const coincidenciaBasica = camposBusqueda.some(
+        (campo) =>
+          campo && campo.toString().toLowerCase().includes(filtroNormalizado)
+      );
+
+      // Verificar coincidencia en historia clínica
+      let coincidenciaHistoriaClinica = false;
+      if (turno.historiaClinica) {
+        // Buscar en datos fijos
+        const datosFijos = turno.historiaClinica.datosFijos
+          ? Object.values(turno.historiaClinica.datosFijos).some(
+              (valor) =>
+                valor &&
+                valor.toString().toLowerCase().includes(filtroNormalizado)
+            )
+          : false;
+
+        // Buscar en datos adicionales
+        const datosAdicionales = (
+          turno.historiaClinica.datosAdicionales || []
+        ).some(
+          (dato: any) =>
+            dato.clave.toLowerCase().includes(filtroNormalizado) ||
+            dato.valor.toString().toLowerCase().includes(filtroNormalizado)
+        );
+
+        coincidenciaHistoriaClinica = datosFijos || datosAdicionales;
+      }
+
+      return coincidenciaBasica || coincidenciaHistoriaClinica;
+    });
   }
 }

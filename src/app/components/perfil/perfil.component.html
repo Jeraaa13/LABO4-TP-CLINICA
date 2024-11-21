@@ -1,0 +1,173 @@
+<div class="container mx-auto p-4">
+  <mat-card class="profile-card" *ngIf="userData">
+    <mat-card-header>
+      <mat-card-title>Mi Perfil</mat-card-title>
+      <mat-card-subtitle>{{ userData.tipo | titlecase }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="profile-content">
+        <div class="basic-info">
+          <div class="info-group">
+            <h3>Información Personal</h3>
+            <p><strong>Nombre:</strong> {{ userData.nombre }}</p>
+            <p><strong>Apellido:</strong> {{ userData.apellido }}</p>
+            <p><strong>Edad:</strong> {{ userData.edad }} años</p>
+            <p><strong>DNI:</strong> {{ userData.dni }}</p>
+            <p><strong>Email:</strong> {{ userData.mail }}</p>
+            <p *ngIf="!esEspecialista && userData.obraSocial">
+              <strong>Obra Social:</strong> {{ userData.obraSocial }}
+            </p>
+          </div>
+
+          <!-- Imágenes de perfil -->
+          <div class="profile-images">
+            <ng-container *ngIf="esEspecialista && userData.imagenPerfil">
+              <img
+                [src]="userData.imagenPerfil"
+                alt="Imagen de perfil"
+                class="profile-img"
+              />
+            </ng-container>
+            <ng-container *ngIf="!esEspecialista">
+              <img
+                *ngIf="userData.imagenPerfil1"
+                [src]="userData.imagenPerfil1"
+                alt="Imagen de perfil 1"
+                class="profile-img"
+              />
+              <img
+                *ngIf="userData.imagenPerfil2"
+                [src]="userData.imagenPerfil2"
+                alt="Imagen de perfil 2"
+                class="profile-img"
+              />
+            </ng-container>
+          </div>
+
+          <!-- Especialidades -->
+          <div *ngIf="esEspecialista && userData.especialidades?.length">
+            <h3>Especialidades</h3>
+            <mat-chip-listbox>
+              <mat-chip *ngFor="let especialidad of userData.especialidades">
+                {{ especialidad }}
+              </mat-chip>
+            </mat-chip-listbox>
+          </div>
+        </div>
+
+        <!-- Horarios -->
+        <form
+          *ngIf="esEspecialista"
+          [formGroup]="horariosForm"
+          (ngSubmit)="guardarHorarios()"
+        >
+          <div formArrayName="horarios">
+            <div
+              *ngFor="let horario of horarios.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field>
+                <mat-label>Especialidad</mat-label>
+                <mat-select formControlName="especialidad">
+                  <mat-option
+                    *ngFor="let esp of userData.especialidades"
+                    [value]="esp"
+                  >
+                    {{ esp }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Día</mat-label>
+                <mat-select formControlName="dia">
+                  <mat-option *ngFor="let dia of diasSemana" [value]="dia">
+                    {{ dia }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Hora Inicio</mat-label>
+                <mat-select formControlName="horaInicio">
+                  <mat-option
+                    *ngFor="let hora of horasDisponibles"
+                    [value]="hora"
+                  >
+                    {{ hora }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Hora Fin</mat-label>
+                <mat-select formControlName="horaFin">
+                  <mat-option
+                    *ngFor="let hora of horasDisponibles"
+                    [value]="hora"
+                  >
+                    {{ hora }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <button
+                mat-icon-button
+                color="warn"
+                type="button"
+                (click)="removerHorario(i)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="agregarHorario()"
+            >
+              Agregar Horario
+            </button>
+            <button mat-raised-button color="accent" type="submit">
+              Guardar Horarios
+            </button>
+          </div>
+        </form>
+
+        <div class="historia-clinica" *ngIf="historia">
+          <h3>Historia Clínica</h3>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let registro of historia?.registros">
+              <div>
+                <h4>Registro</h4>
+                <p>
+                  <strong>Altura:</strong>
+                  {{ registro.datosFijos.altura }} cm
+                </p>
+                <p><strong>Peso:</strong> {{ registro.datosFijos.peso }} kg</p>
+                <p>
+                  <strong>Temperatura:</strong>
+                  {{ registro.datosFijos.temperatura }} °C
+                </p>
+                <p>
+                  <strong>Presión:</strong> {{ registro.datosFijos.presion }}
+                </p>
+                <h4 *ngIf="!registro.datosAdicionales">Datos adicionales:</h4>
+                <ul>
+                  <li *ngFor="let dato of registro.datosAdicionales">
+                    <strong>{{ dato.clave }}:</strong> {{ dato.valor }}
+                  </li>
+                </ul>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <p *ngIf="!historia">No hay historias clínicas registradas.</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

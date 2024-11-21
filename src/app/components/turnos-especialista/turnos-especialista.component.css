@@ -1,0 +1,196 @@
+.filtros-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filtros-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.filtros-input input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #2b2d42;
+  transition: all 0.3s ease;
+}
+
+.filtros-input input:focus {
+  border-color: #89c2d9;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(137, 194, 217, 0.2);
+}
+
+.filtros-input input::placeholder {
+  color: #6c757d;
+  opacity: 0.7;
+}
+
+.filtros-input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+@media (max-width: 600px) {
+  .filtros-container {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .filtros-input input {
+    width: 100%;
+  }
+}
+
+.turnos-container {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.turnos-container:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.turnos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 1rem;
+}
+
+.turnos-info {
+  flex: 1;
+}
+
+.turnos-info p {
+  margin: 0.5rem 0;
+  color: #2b2d42;
+  font-size: 0.95rem;
+}
+
+.turnos-info p strong {
+  color: #2c7da0;
+  margin-right: 0.5rem;
+}
+
+.turnos-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.turnos-buttons button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.btn-calificar {
+  background-color: #61a5c2;
+  color: white;
+}
+
+.btn-calificar:hover {
+  background-color: #2c7da0;
+  transform: translateY(-2px);
+}
+
+.btn-cancelar {
+  background-color: #e63946;
+  color: white;
+}
+
+.btn-cancelar:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+
+.btn-ver-resena,
+.btn-completar-encuesta {
+  background-color: #89c2d9;
+  color: white;
+}
+
+.btn-ver-resena:hover,
+.btn-completar-encuesta:hover {
+  background-color: #2c7da0;
+  transform: translateY(-2px);
+}
+
+.calificacion-form {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.calificacion-form textarea,
+.calificacion-form input[type="number"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.calificacion-form textarea:focus,
+.calificacion-form input[type="number"]:focus {
+  border-color: #89c2d9;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(137, 194, 217, 0.2);
+}
+
+.btn-enviar-calificacion {
+  background-color: #2c7da0;
+  color: white;
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-enviar-calificacion:hover {
+  background-color: #61a5c2;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .turnos-container {
+    padding: 1rem;
+  }
+
+  .turnos-buttons {
+    flex-direction: column;
+  }
+
+  .turnos-buttons button {
+    width: 100%;
+  }
+}

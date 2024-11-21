@@ -27,6 +27,7 @@ import {
   updateDoc,
   addDoc,
   doc,
+  setDoc,
 } from '@angular/fire/firestore';
 
 interface UserData {
@@ -178,8 +179,8 @@ export class AdminUsersComponent implements OnInit {
         );
       }
 
-      const adminCollection = collection(this.firestore, 'users');
-      await addDoc(adminCollection, {
+      const adminDocRef = doc(this.firestore, 'users', userCredential.user.uid);
+      await setDoc(adminDocRef, {
         ...this.adminForm.value,
         uid: userCredential.user.uid,
         tipo: 'admin',

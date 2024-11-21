@@ -1,60 +1,38 @@
-<div *ngIf="turnos.length > 0; else sinTurnos">
-  <h3>Mis Turnos</h3>
-
-  <div class="filters">
-    <label>
-      Filtrar por Especialidad:
+<div class="turnos-container">
+  <div class="filtros-container">
+    <div class="filtros-input">
       <input
         type="text"
-        [(ngModel)]="especialidadFiltro"
-        placeholder="Ingrese la especialidad"
+        placeholder="Buscar en todos los campos"
+        (input)="aplicarFiltros()"
+        [(ngModel)]="filtroGeneral"
       />
-    </label>
-    <label>
-      Filtrar por Especialista:
-      <input
-        type="text"
-        [(ngModel)]="especialistaFiltro"
-        placeholder="Ingrese el nombre del especialista"
-      />
-    </label>
-  </div>
-
-  <div *ngFor="let turno of turnos">
-    <div>
-      <p>Especialidad: {{ turno.especialidad }}</p>
-      <p>
-        Especialista: {{ turno.especialistaNombre }}
-        {{ turno.especialistaApellido }}
-      </p>
-      <p>Fecha: {{ turno.fecha | date : "dd/MM/yyyy HH:mm" }}</p>
-      <p>Estado: {{ turno.estado }}</p>
+      <span class="filtros-input-icon">🔍</span>
+      <button
+        *ngIf="filtroGeneral"
+        (click)="limpiarFiltros()"
+        class="btn-limpiar-filtro"
+      >
+        ✖
+      </button>
     </div>
 
-    <button *ngIf="turno.estado === 'Pendiente'" (click)="cancelarTurno(turno)">
-      Cancelar turno
-    </button>
-
-    <button *ngIf="turno.comentario" (click)="verResena(turno)">
-      Ver reseña
-    </button>
-
-    <button
-      *ngIf="turno.estado === 'Realizado' && turno.resena"
-      (click)="completarEncuesta(turno)"
-    >
-      Completar encuesta
-    </button>
-
-    <button
-      *ngIf="turno.estado === 'Realizado'"
-      (click)="calificarAtencion(turno)"
-    >
-      Calificar Atención
-    </button>
+    <div class="filtros-info" *ngIf="filtroGeneral">
+      <p>Resultados filtrados por: "{{ filtroGeneral }}"</p>
+    </div>
   </div>
-</div>
 
-<ng-template #sinTurnos>
-  <p>No tienes turnos registrados.</p>
-</ng-template>
+  <ng-container *ngIf="turnosFiltrados.length > 0; else sinTurnos">
+    <app-card-turno
+      *ngFor="let turno of turnosFiltrados"
+      [turno]="turno"
+      [tipo]="'paciente'"
+    ></app-card-turno>
+  </ng-container>
+
+  <ng-template #sinTurnos>
+    <div class="sin-turnos">
+      <p>No se encontraron turnos que coincidan con la búsqueda</p>
+    </div>
+  </ng-template>
+</div>

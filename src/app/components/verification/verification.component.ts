@@ -7,6 +7,7 @@ import {
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-verification',
@@ -32,22 +33,38 @@ export class VerificationComponent {
 
       let user = this.auth.currentUser;
 
-      // Debug: Check session storage immediately
       const storedEmail = sessionStorage.getItem('unverifiedEmail');
       console.log('Retrieved stored email:', storedEmail);
 
-      // Re-authenticate if no active user
       if (!user) {
         console.log('No active user; using session-stored email.');
         if (storedEmail) {
-          const password = prompt(
-            'Por favor ingresa tu contraseña para reenviar el email de verificación:'
-          );
-          if (password) {
+          const password = await Swal.fire({
+            title: 'Ingresa tu contraseña',
+            input: 'password',
+            inputAttributes: {
+              autocapitalize: 'off',
+              autocomplete: 'new-password',
+            },
+            inputPlaceholder: 'Escribe tu contraseña',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            preConfirm: (value) => {
+              if (!value) {
+                Swal.showValidationMessage('Por favor ingresa una contraseña');
+              }
+              return value;
+            },
+          });
+
+          if (password.isConfirmed) {
+            const enteredPassword = password.value;
+
             const userCredential = await signInWithEmailAndPassword(
               this.auth,
               storedEmail,
-              password
+              enteredPassword
             );
             user = userCredential.user;
             this.auth.signOut();

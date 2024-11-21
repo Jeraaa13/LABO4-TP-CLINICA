@@ -1,53 +1,105 @@
 <div class="solicitar-turno-container">
-  <h2>Solicitar Turno</h2>
-
-  <form [formGroup]="turnoForm" (ngSubmit)="solicitarTurno()">
-    <label for="especialidad">Especialidad</label>
-    <div class="especialidades">
-      <button
-        *ngFor="let especialidad of especialidades"
-        [ngClass]="{ selected: especialidadSeleccionada === especialidad }"
-        (click)="seleccionarEspecialidad(especialidad)"
-      >
-        {{ especialidad }}
-      </button>
-    </div>
-
-    <label for="especialista">Especialista</label>
-    <div class="especialistas">
+  <div *ngIf="paso === 'especialistas'" class="especialistas-seleccion">
+    <h2>Selecciona un Especialista</h2>
+    <div class="especialistas-grid">
       <button
         *ngFor="let especialista of especialistas"
-        type="button"
-        [class.selected]="
-          especialista.id === turnoForm.get('especialista')?.value
-        "
         (click)="seleccionarEspecialista(especialista)"
+        class="especialista-btn"
       >
-        {{ especialista.nombre + " " + especialista.apellido }}
+        <img
+          [src]="especialista.imagenPerfil"
+          [alt]="especialista.nombre"
+          class="especialista-img"
+        />
+        <span>{{ especialista.nombre }} {{ especialista.apellido }}</span>
       </button>
     </div>
+  </div>
 
-    <label for="fecha">Fecha y Horario</label>
-    <div *ngIf="fechasDisponibles.length > 0">
-      <ul>
-        <li *ngFor="let fecha of fechasDisponibles">
+  <div *ngIf="paso === 'especialidades'" class="especialidades-seleccion">
+    <button (click)="resetSeleccion()" class="btn-volver">
+      ← Volver a Especialistas
+    </button>
+    <h2>Selecciona una Especialidad</h2>
+    <div class="especialidades-grid">
+      <button
+        *ngFor="let especialidad of especialidades"
+        (click)="seleccionarEspecialidad(especialidad)"
+        class="especialidad-btn"
+      >
+        <img
+          [src]="getEspecialidadImagenUrl(especialidad)"
+          [alt]="especialidad"
+          class="especialidad-img"
+          (error)="handleImageError($event)"
+        />
+        <span>{{ especialidad }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="paso === 'fechas'" class="fechas-seleccion">
+    <button (click)="resetSeleccion()" class="btn-volver">
+      ← Volver a Especialidades
+    </button>
+
+    <form [formGroup]="turnoForm" (ngSubmit)="solicitarTurno()">
+      <div *ngIf="fechasDisponibles.length > 0">
+        <label>Fecha:</label>
+        <div class="fechas-grid">
           <button
+            *ngFor="let fecha of fechasDisponibles"
             type="button"
+            [class.selected]="fechaSeleccionada === fecha.fecha"
             (click)="seleccionarFecha(fecha)"
-            [class.selected-date]="fecha === fechaSeleccionada"
           >
-            {{ fecha | date : "dd/MM/yyyy HH:mm" }}
+            {{ fecha.fecha | date : "dd-MM EEE" }}
           </button>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
 
-    <div *ngIf="fechaSeleccionada">
-      <p>
-        Fecha seleccionada: {{ fechaSeleccionada | date : "dd/MM/yyyy HH:mm" }}
-      </p>
-    </div>
+      <div *ngIf="fechaSeleccionada">
+        <label>Horario:</label>
+        <div class="horarios-grid">
+          <button
+            *ngFor="let horario of horariosDisponibles"
+            type="button"
+            [class.selected]="turnoForm.get('horario')?.value === horario.hora"
+            [class.ocupado]="!horario.disponible"
+            [disabled]="!horario.disponible"
+            (click)="seleccionarHorario(horario)"
+          >
+            {{ horario.hora }}
+            <span *ngIf="!horario.disponible" class="ocupado-texto"
+              >Ocupado</span
+            >
+          </button>
+        </div>
+      </div>
 
-    <button type="submit" [disabled]="!turnoForm.valid">Solicitar Turno</button>
-  </form>
+      <div *ngIf="esAdmin">
+        <h2>Selecciona un Paciente</h2>
+        <div class="especialistas-grid">
+          <button
+            *ngFor="let paciente of pacientes"
+            type="button"
+            (click)="seleccionarPaciente(paciente)"
+            class="especialistas-btn"
+          >
+            <img
+              [src]="paciente.imagenPerfil"
+              [alt]="paciente.nombre"
+              class="especialista-img"
+            />
+            <span>{{ paciente.nombre }} {{ paciente.apellido }}</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="!turnoForm.valid">
+        Solicitar Turno
+      </button>
+    </form>
+  </div>
 </div>

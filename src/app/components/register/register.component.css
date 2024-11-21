@@ -64,9 +64,13 @@
   margin-bottom: 0.5rem;
 }
 
+.inputcheckbox {
+  width: 10%;
+}
+
 .register-form .form-group input,
 .register-form .form-group select {
-  width: 100%;
+  margin: 6px;
   padding: 0.8rem;
   border: 2px solid #e9ecef;
   border-radius: 10px;

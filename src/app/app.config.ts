@@ -11,23 +11,17 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    {
-      provide: FIREBASE_OPTIONS,
-      useValue: {
-        firebaseConfig,
-      },
-    },
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
-    provideHttpClient(withInterceptorsFromDi()), provideAnimationsAsync(),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideAnimationsAsync(),
   ],
 };

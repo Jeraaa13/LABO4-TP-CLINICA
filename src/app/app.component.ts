@@ -29,18 +29,11 @@ export class AppComponent implements OnInit {
 
   private updateUserStatus(user: User | null): void {
     this.user = user;
-    console.log('USER => ', user); // Verifica que ahora tenga los datos de Firestore
+    console.log('USER => ', user);
+
     this.isAdmin = user?.tipo === 'admin';
     this.isEspecialista = user?.tipo === 'especialista';
     this.isPaciente = user?.tipo === 'paciente';
-    console.log(
-      'Admin: ',
-      this.isAdmin,
-      'Especialista: ',
-      this.isEspecialista,
-      'Paciente: ',
-      this.isPaciente
-    );
   }
 
   logout() {

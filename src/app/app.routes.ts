@@ -35,7 +35,14 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'mis-turnos',
+    path: 'turnos-admin',
+    loadComponent: () =>
+      import('./components/admin-turnos/admin-turnos.component').then(
+        (c) => c.AdminTurnosComponent
+      ),
+  },
+  {
+    path: 'turnos-pacientes',
     loadComponent: () =>
       import('./components/mis-turnos/mis-turnos.component').then(
         (c) => c.MisTurnosComponent
@@ -54,6 +61,28 @@ export const routes: Routes = [
       import(
         './components/turnos-especialista/turnos-especialista.component'
       ).then((c) => c.TurnosEspecialistaComponent),
+  },
+  {
+    path: 'perfil',
+    loadComponent: () =>
+      import('./components/perfil/perfil.component').then(
+        (c) => c.PerfilComponent
+      ),
+    //canActivate: [AuthGuard],
+  },
+  {
+    path: 'usuarios',
+    loadComponent: () =>
+      import('./components/usuarios/usuarios.component').then(
+        (c) => c.UsuariosComponent
+      ),
+  },
+  {
+    path: 'pacientes',
+    loadComponent: () =>
+      import('./components/pacientes/pacientes.component').then(
+        (c) => c.PacientesComponent
+      ),
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

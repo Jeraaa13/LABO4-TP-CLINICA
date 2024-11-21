@@ -3,8 +3,9 @@
     <div class="filtros-input">
       <input
         type="text"
-        placeholder="Buscar por especialidad"
-        (input)="onEspecialidadInput($event)"
+        placeholder="Filtrar por especialista"
+        (input)="aplicarFiltros()"
+        [(ngModel)]="especialistaFiltro"
       />
       <span class="filtros-input-icon"> 🔍 </span>
     </div>
@@ -12,18 +13,21 @@
     <div class="filtros-input">
       <input
         type="text"
-        placeholder="Buscar por paciente"
-        (input)="onPacienteInput($event)"
+        placeholder="Filtrar por especialidad"
+        (input)="aplicarFiltros()"
+        [(ngModel)]="especialidadFiltro"
       />
       <span class="filtros-input-icon"> 🔍 </span>
     </div>
   </div>
 
-  <app-card-turno
-    *ngFor="let turno of turnosFiltrados"
-    [turno]="turno"
-    [tipo]="'especialista'"
-  ></app-card-turno>
+  <div class="turnos-grid">
+    <app-card-turno
+      *ngFor="let turno of turnosFiltrados"
+      [turno]="turno"
+      [tipo]="'admin'"
+    ></app-card-turno>
+  </div>
 
   <span *ngIf="turnos.length === 0">No hay turnos</span>
 </div>

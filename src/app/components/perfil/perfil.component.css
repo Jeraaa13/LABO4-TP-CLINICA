@@ -1,0 +1,29 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.profile-card {
+  margin: 20px;
+}
+.profile-content {
+  padding: 20px;
+}
+.info-group {
+  margin-bottom: 20px;
+}
+.profile-images {
+  margin: 20px 0;
+}
+.profile-img {
+  max-width: 200px;
+  margin: 10px;
+  border-radius: 8px;
+}
+.actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+mat-form-field {
+  margin: 0 10px 10px 0;
+}

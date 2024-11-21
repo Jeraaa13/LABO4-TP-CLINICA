@@ -13,7 +13,7 @@ import {
   getDocs,
   addDoc,
 } from '@angular/fire/firestore';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { LoadingComponent } from '../loading/loading.component';
 
@@ -27,13 +27,7 @@ interface UserData {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    FormsModule,
-    RouterOutlet,
-    RouterLink,
-    CommonModule,
-    LoadingComponent,
-  ],
+  imports: [FormsModule, CommonModule, LoadingComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -94,7 +88,6 @@ export class LoginComponent {
       }
 
       if (userData.tipo === 'admin') {
-        //await this.registrarLog(userData);
         this.router.navigate(['/admin/users']);
         return;
       }

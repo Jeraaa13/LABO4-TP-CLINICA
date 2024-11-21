@@ -11,7 +11,7 @@
     </a>
     <a
       *ngIf="(authService.user$ | async) && isPaciente == true"
-      (click)="navigateTo('/mis-turnos')"
+      (click)="navigateTo('/turnos-pacientes')"
     >
       Mis Turnos
     </a>
@@ -22,10 +22,33 @@
       Mis Turnos
     </a>
     <a
-      *ngIf="(authService.user$ | async) && isPaciente == true"
+      *ngIf="
+        ((authService.user$ | async) && isPaciente == true) || isAdmin == true
+      "
       (click)="navigateTo('/solicitar-turno')"
     >
       Solicitar Turno
+    </a>
+    <a
+      *ngIf="(authService.user$ | async) && isAdmin == true"
+      (click)="navigateTo('/turnos-admin')"
+    >
+      Turnos
+    </a>
+    <a *ngIf="authService.user$ | async" (click)="navigateTo('/perfil')">
+      Mi Perfil
+    </a>
+    <a
+      *ngIf="(authService.user$ | async) && isAdmin == true"
+      (click)="navigateTo('/usuarios')"
+    >
+      Usuarios
+    </a>
+    <a
+      *ngIf="(authService.user$ | async) && isEspecialista == true"
+      (click)="navigateTo('/pacientes')"
+    >
+      Pacientes
     </a>
     <a *ngIf="authService.user$ | async" (click)="logout()"> Cerrar Sesión </a>
   </div>
