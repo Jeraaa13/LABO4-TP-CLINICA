@@ -1,55 +1,42 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const axios = require("axios");
-
+const fetch = require("node-fetch");
+const cors = require("cors");
 const app = express();
-const PORT = 3000;
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors({ origin: "*" }));
 
 app.post("/verify-recaptcha", async (req, res) => {
-  const secretKey = "6LeJpIUqAAAAABjkN_bTtcWSdIJYEV9qV8jfUwsG";
-  const token = req.body.token;
+  const token = req.body.token; // Obtener el token de la solicitud
 
   if (!token) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Token no enviado" });
+    return res.status(400).json({ error: "No token provided" });
   }
 
   try {
-    const response = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify`,
-      null,
+    // Verificar el token con la API de reCAPTCHA de Google
+    const secretKey = "6LfyiIUqAAAAAOxE_k-F2jinnUXLlMo4PdYC0Zem"; // Usa tu clave secreta de reCAPTCHA
+    const response = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`,
       {
-        params: {
-          secret: secretKey,
-          response: token,
-        },
+        method: "POST",
       }
     );
 
-    const data = response.data;
-
-    if (data.success) {
-      return res
-        .status(200)
-        .json({ success: true, message: "Verificación exitosa" });
+    const verificationResult = await response.json();
+    if (verificationResult.success) {
+      // El token es válido
+      return res.status(200).json({ success: true });
     } else {
-      return res.status(400).json({
-        success: false,
-        message: "Verificación fallida",
-        errorCodes: data["error-codes"],
-      });
+      // El token no es válido
+      return res.status(400).json({ error: "Invalid captcha token" });
     }
   } catch (error) {
-    console.error("Error al verificar el reCAPTCHA:", error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Error del servidor" });
+    console.error("Error verificando el captcha:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(3000, () => {
+  console.log("Servidor corriendo en http://localhost:3000");
 });
