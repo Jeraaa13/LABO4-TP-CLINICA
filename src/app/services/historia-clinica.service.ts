@@ -10,6 +10,8 @@ import {
   setDoc,
   getDoc,
   Timestamp,
+  orderBy,
+  limit,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import {
@@ -18,6 +20,7 @@ import {
   HistoriaClinicaDocumento,
   RegistroHistoriaClinica,
 } from '../models/historiaClinica.model';
+import { getDownloadURL, getStorage, ref } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +33,24 @@ export class HistoriaClinicaService {
       this.firestore,
       'historias-clinicas'
     );
+  }
+
+  async obtenerFotoPaciente(pacienteId: string): Promise<string> {
+    const storage = getStorage();
+    const fotoRef = ref(storage, `users/${pacienteId}`); // Ajusta la ruta según tu estructura
+    return await getDownloadURL(fotoRef);
+  }
+
+  async obtenerTurnosRecientes(pacienteId: string): Promise<any[]> {
+    const turnosRef = collection(this.firestore, 'turnos');
+    const q = query(
+      turnosRef,
+      where('pacienteId', '==', pacienteId),
+      orderBy('fecha', 'desc'),
+      limit(3)
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => doc.data());
   }
 
   async cargarHistoriasClinicas(): Promise<HistoriaClinicaDocumento[]> {
@@ -157,6 +178,7 @@ export class HistoriaClinicaService {
     nuevoRegistro: {
       turnoId: string;
       especialistaId: string;
+      especialidad: string;
       datosFijos: DatosFijos;
       datosAdicionales?: DatoAdicional[];
       resena?: string;

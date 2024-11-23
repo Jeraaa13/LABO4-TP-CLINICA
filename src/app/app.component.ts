@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { User } from './models/user.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { slideAndFadeAnimation } from './animation';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  animations: [slideAndFadeAnimation],
 })
 export class AppComponent implements OnInit {
   title = 'tp-clinica';
@@ -18,6 +20,9 @@ export class AppComponent implements OnInit {
   isAdmin: boolean = false;
   isEspecialista: boolean = false;
   isPaciente: boolean = false;
+  showContent = true;
+  showOtherContent = false;
+  @ViewChild(RouterOutlet) outlet!: RouterOutlet;
 
   constructor(public authService: AuthService, private router: Router) {}
 
@@ -44,5 +49,9 @@ export class AppComponent implements OnInit {
 
   navigateTo(path: string): void {
     this.router.navigate([path]);
+  }
+
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet?.activatedRouteData?.['animation'] || '';
   }
 }

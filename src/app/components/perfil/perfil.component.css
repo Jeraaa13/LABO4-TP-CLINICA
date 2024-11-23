@@ -1,6 +1,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
 }
 .profile-card {
   margin: 20px;
@@ -26,4 +27,49 @@
 }
 mat-form-field {
   margin: 0 10px 10px 0;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.export-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #2196f3;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.export-btn:hover {
+  background-color: #1976d2;
+  transform: scale(1.05);
+}
+
+.export-btn:active {
+  background-color: #0d47a1;
+  transform: scale(0.95);
+}
+
+.export-btn mat-icon {
+  font-size: 20px;
+}
+
+p {
+  margin-left: 20px;
+}
+h5 {
+  margin-left: 10px;
 }

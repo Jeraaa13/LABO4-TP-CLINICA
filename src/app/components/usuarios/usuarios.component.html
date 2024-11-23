@@ -1,5 +1,7 @@
 <div class="historias-clinicas-container">
   <ng-container *ngIf="!cargando">
+    <mat-button class="" (click)="exportToExcel()">Exportar a Excel</mat-button>
+
     <div *ngIf="historiasClinicas.length === 0" class="no-historias">
       <mat-icon>medical_information</mat-icon>
       <p>No hay historias clínicas registradas.</p>
@@ -15,6 +17,9 @@
           <mat-card-subtitle
             >Paciente ID: {{ historial.pacienteId }}</mat-card-subtitle
           >
+          <mat-card-subtitle style="margin-bottom: 10px"
+            >Registros:</mat-card-subtitle
+          >
         </mat-card-header>
 
         <mat-card-content>
@@ -25,7 +30,7 @@
             >
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  <mat-icon>calendar_today</mat-icon>
+                  <mat-icon>calendar_today </mat-icon>
                   Fecha: {{ registro.fecha | date : "mediumDate" }}
                 </mat-panel-title>
               </mat-expansion-panel-header>
@@ -74,6 +79,13 @@
             </mat-expansion-panel>
           </mat-accordion>
         </mat-card-content>
+
+        <!-- Botón para exportar a Excel -->
+        <mat-card-actions>
+          <button mat-button (click)="exportUserDataToExcel(historial)">
+            Descargar Excel
+          </button>
+        </mat-card-actions>
       </mat-card>
     </div>
   </ng-container>

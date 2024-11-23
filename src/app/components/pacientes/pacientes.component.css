@@ -4,89 +4,58 @@
   padding: 2rem;
 }
 
-.no-pacientes {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background-color: var(--background-color);
-  border-radius: 10px;
-  text-align: center;
-}
-
-.no-pacientes mat-icon {
-  font-size: 4rem;
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-}
-
 .pacientes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 1.5rem;
 }
-.historias-clinicas-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+
+.paciente-card {
+  transition: transform 0.2s ease-in-out;
 }
 
-.no-historias {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background-color: var(--background-color);
-  border-radius: 10px;
-  text-align: center;
-}
-
-.no-historias mat-icon {
-  font-size: 4rem;
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-}
-
-.historias-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-}
-
-.historia-card {
-  transition: var(--transition);
-  box-shadow: var(--shadow);
-}
-
-.historia-card:hover {
+.paciente-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.registro-panel {
-  margin-bottom: 0.5rem;
-}
-
-.registro-detalle {
+.turno-detalle {
   padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+  margin-top: 0.5rem;
 }
 
-.datos-fijos,
-.datos-adicionales {
-  margin-bottom: 1rem;
-}
-
-.resena {
-  background-color: rgba(44, 125, 160, 0.05);
-  padding: 1rem;
-  border-radius: 8px;
+.turno-detalle p {
+  margin: 0.5rem 0;
 }
 
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 300px;
+}
+
+.no-pacientes {
+  text-align: center;
+  padding: 2rem;
+}
+
+.no-pacientes mat-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+mat-expansion-panel {
+  margin-bottom: 0.5rem;
+}
+
+mat-card-subtitle {
+  margin-bottom: 0.5rem;
+}
+
+mat-card-actions {
+  padding: 16px;
+  display: flex;
+  justify-content: flex-end;
 }

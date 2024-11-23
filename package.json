@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^18.2.0",
+    "@angular/animations": "^18.2.12",
     "@angular/cdk": "^18.2.11",
     "@angular/common": "^18.2.0",
     "@angular/compiler": "^18.2.0",
@@ -24,11 +24,15 @@
     "@angular/router": "^18.2.0",
     "@types/chart.js": "^2.9.41",
     "chart.js": "^4.4.6",
+    "cors": "^2.8.5",
     "firebase": "^11.0.1",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "ng-recaptcha": "^13.2.1",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.14.5",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {

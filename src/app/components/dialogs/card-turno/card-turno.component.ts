@@ -169,6 +169,7 @@ export class CardTurnoComponent implements OnInit {
           {
             turnoId: this.turno.id,
             especialistaId: this.turno.especialistaId,
+            especialidad: this.turno.especialidad,
             datosFijos: {
               altura: resultado.altura,
               peso: resultado.peso,
@@ -211,43 +212,6 @@ export class CardTurnoComponent implements OnInit {
       });
     } else {
       this.snackBar.open('Este turno no tiene reseña', 'Cerrar', {
-        duration: 3000,
-      });
-    }
-  }
-
-  private async actualizarEstadoTurno(turno: any, historiaClinica: any) {
-    const turnoRef = doc(this.firestore, 'turnos', turno.id);
-    try {
-      await updateDoc(turnoRef, {
-        estado: 'realizado',
-        resena: historiaClinica.resena,
-      });
-
-      await this.turnosService.guardarHistoriaClinica({
-        turnoId: turno.id,
-        pacienteId: turno.pacienteId,
-        especialistaId: turno.especialistaId,
-        datosFijos: {
-          altura: historiaClinica.altura,
-          peso: historiaClinica.peso,
-          temperatura: historiaClinica.temperatura,
-          presion: historiaClinica.presion,
-        },
-        datosAdicionales: historiaClinica.datosAdicionales || [],
-        fechaCreacion: new Date(),
-      });
-
-      turno.estado = 'realizado';
-      this.snackBar.open(
-        'Turno finalizado con historia clínica guardada',
-        'Cerrar',
-        {
-          duration: 3000,
-        }
-      );
-    } catch (error) {
-      this.snackBar.open('Error al finalizar el turno', 'Cerrar', {
         duration: 3000,
       });
     }

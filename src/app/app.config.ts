@@ -12,7 +12,7 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,5 +24,6 @@ export const appConfig: ApplicationConfig = {
     provideStorage(() => getStorage()),
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimationsAsync(),
+    provideAnimations(),
   ],
 };

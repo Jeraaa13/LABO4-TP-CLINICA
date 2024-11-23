@@ -281,19 +281,19 @@ export class RegisterComponent implements OnInit {
     return this.fb.control('', Validators.required);
   }
 
-  onCaptchaResolved(token: string | null) {
-    if (token) {
-      this.http
-        .post('http://localhost:3000/verify-recaptcha', { token })
-        .subscribe(
-          (response) => {
-            console.log('Verificación exitosa:', response);
-          },
-          (error) => {
-            console.error('Error en la verificación:', error);
-          }
-        );
-    }
+  onCaptchaResolved(captchaResponse: string | null) {
+    this.http
+      .post('http://localhost:3000/verify-recaptcha', {
+        token: captchaResponse,
+      })
+      .subscribe({
+        next: (response) => {
+          console.log('Captcha verificado exitosamente');
+        },
+        error: (err) => {
+          console.error('Error en la verificación: ', err);
+        },
+      });
   }
 
   async verifyRecaptcha(token: string): Promise<boolean | undefined> {

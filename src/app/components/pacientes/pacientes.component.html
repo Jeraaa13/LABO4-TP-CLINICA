@@ -7,72 +7,48 @@
 
     <div *ngIf="pacientesAtendidos.length > 0" class="pacientes-grid">
       <mat-card
-        *ngFor="let historial of pacientesAtendidos"
+        *ngFor="let paciente of pacientesAtendidos"
         class="paciente-card"
       >
         <mat-card-header>
-          <mat-card-title>Paciente</mat-card-title>
-          <mat-card-subtitle
-            >ID Paciente: {{ historial.pacienteId }}</mat-card-subtitle
-          >
+          <mat-card-title>
+            Nombre:
+            {{ paciente.nombre || "Nombre no disponible" }}
+          </mat-card-title>
+          <mat-card-subtitle>Últimos 3 turnos</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
-          <mat-accordion multi="true">
-            <mat-expansion-panel
-              *ngFor="let registro of historial.registros"
-              class="registro-panel"
-            >
+          <div *ngIf="paciente.turnos.length === 0" class="no-turnos">
+            <p>No hay turnos registrados</p>
+          </div>
+
+          <mat-accordion *ngIf="paciente.turnos.length > 0">
+            <mat-expansion-panel *ngFor="let turno of paciente.turnos">
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  <mat-icon>calendar_today</mat-icon>
-                  Fecha: {{ registro.fecha | date : "mediumDate" }}
+                  {{ turno.fecha.toDate() | date : "dd/MM/yyyy" }} -
+                  {{ turno.horario }}
                 </mat-panel-title>
               </mat-expansion-panel-header>
 
-              <div class="registro-detalle">
-                <div class="datos-fijos">
-                  <mat-chip-listbox>
-                    <mat-chip-option disabled>
-                      <strong>Altura:</strong>
-                      {{ registro.datosFijos.altura }} cm
-                    </mat-chip-option>
-                    <mat-chip-option disabled>
-                      <strong>Peso:</strong> {{ registro.datosFijos.peso }} kg
-                    </mat-chip-option>
-                    <mat-chip-option disabled>
-                      <strong>Temperatura:</strong>
-                      {{ registro.datosFijos.temperatura }} °C
-                    </mat-chip-option>
-                    <mat-chip-option disabled>
-                      <strong>Presión:</strong>
-                      {{ registro.datosFijos.presion }}
-                    </mat-chip-option>
-                  </mat-chip-listbox>
-                </div>
-
-                <div
-                  *ngIf="registro.datosAdicionales?.length"
-                  class="datos-adicionales"
-                >
-                  <h4>Datos Adicionales</h4>
-                  <mat-chip-listbox>
-                    <mat-chip-option
-                      *ngFor="let dato of registro.datosAdicionales"
-                      disabled
-                    >
-                      {{ dato.clave }}: {{ dato.valor }}
-                    </mat-chip-option>
-                  </mat-chip-listbox>
-                </div>
-
-                <div class="resena" *ngIf="registro.resena">
-                  <h4>Reseña</h4>
-                  <p>{{ registro.resena }}</p>
-                </div>
+              <div class="turno-detalle">
+                <p><strong>Especialidad:</strong> {{ turno.especialidad }}</p>
+                <p><strong>Estado:</strong> {{ turno.estado }}</p>
+                <p>
+                  <strong>Reseña:</strong> {{ turno.resena || "Sin reseña" }}
+                </p>
               </div>
             </mat-expansion-panel>
           </mat-accordion>
+
+          <button
+            mat-button
+            color="primary"
+            (click)="verHistoriaClinica(paciente.pacienteId, paciente.nombre)"
+          >
+            Ver Historia Clínica
+          </button>
         </mat-card-content>
       </mat-card>
     </div>

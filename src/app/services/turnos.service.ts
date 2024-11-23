@@ -7,6 +7,8 @@ import {
   where,
   setDoc,
   addDoc,
+  orderBy,
+  limit,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { getDocs } from '@angular/fire/firestore';
@@ -352,6 +354,31 @@ export class TurnosService {
     });
   }
 
+  async obtenerUltimosTresTurnosPorPaciente(pacienteId: string) {
+    try {
+      const turnosRef = collection(this.firestore, 'turnos');
+
+      const q = query(
+        turnosRef,
+        where('paciente', '==', pacienteId),
+        orderBy('fecha', 'desc'),
+        limit(3)
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      const turnos = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return turnos;
+    } catch (error) {
+      console.error('Error al obtener los turnos:', error);
+      throw error;
+    }
+  }
+
   async obtenerHistoriaClinicaParaTurno(turno: any): Promise<{
     datosFijos: any | null;
     datosAdicionales: any[];
@@ -383,19 +410,5 @@ export class TurnosService {
       console.error('Error al obtener historia clínica:', error);
       return null;
     }
-  }
-
-  async obtenerHistoriasClinicasPaciente(pacienteId: string) {
-    const historiaClinicaRef = collection(this.firestore, 'historias-clinicas');
-    const q = query(historiaClinicaRef, where('pacienteId', '==', pacienteId));
-    const querySnapshot = await getDocs(q);
-
-    return querySnapshot.docs.map(
-      (doc) =>
-        ({
-          id: doc.id,
-          ...doc.data(),
-        } as HistoriaClinica)
-    );
   }
 }

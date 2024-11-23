@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'formatoFecha',
 })
 export class FormatoFechaPipe implements PipeTransform {
-  transform(value: any, ...args: unknown[]): string {
+  transform(value: any): string {
     if (value instanceof Date) {
       return value.toLocaleDateString('es-ES', {
         year: 'numeric',
@@ -13,6 +13,13 @@ export class FormatoFechaPipe implements PipeTransform {
         day: 'numeric',
       });
     }
-    return value;
+    if (value?.toDate) {
+      return value.toDate().toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    }
+    return 'Fecha inválida';
   }
 }

@@ -1,8 +1,5 @@
 export interface HistoriaClinica {
-  id?: string;
-  turnoId: string;
   pacienteId: string;
-  especialistaId: string;
   datosFijos: {
     altura: number;
     peso: number;
@@ -31,10 +28,11 @@ export interface DatoAdicional {
 export interface RegistroHistoriaClinica {
   turnoId: string;
   especialistaId: string;
+  especialidad: string;
   datosFijos: DatosFijos;
   datosAdicionales?: DatoAdicional[];
   resena?: string;
-  fecha: Date;
+  fecha: any;
 }
 
 export interface HistoriaClinicaDocumento {
@@ -42,10 +40,8 @@ export interface HistoriaClinicaDocumento {
   registros: RegistroHistoriaClinica[];
 }
 
-export interface Turno {
-  id: string;
-  estado: string;
-  pacienteId: string;
-  especialistaId: string;
-  resena?: string;
+export interface HistoriaClinicaDocumentoExtendido
+  extends HistoriaClinicaDocumento {
+  fotoUrl: string;
+  turnosRecientes: RegistroHistoriaClinica[];
 }

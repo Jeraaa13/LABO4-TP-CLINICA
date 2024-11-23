@@ -1,5 +1,5 @@
 <div class="container mx-auto p-4">
-  <mat-card class="profile-card" *ngIf="userData">
+  <mat-card class="profile-card" *ngIf="userData" [@slideInFromBottom]>
     <mat-card-header>
       <mat-card-title>Mi Perfil</mat-card-title>
       <mat-card-subtitle>{{ userData.tipo | titlecase }}</mat-card-subtitle>
@@ -140,10 +140,35 @@
 
         <div class="historia-clinica" *ngIf="historia">
           <h3>Historia Clínica</h3>
+
+          <h5>Descargar PDF de especialidad</h5>
+          <mat-form-field class="filter-field" appearance="fill">
+            <mat-label>Selecciona la Especialidad</mat-label>
+            <mat-select
+              [(ngModel)]="especialidadSeleccionada"
+              placeholder="Elige una especialidad"
+              (click)="filtrarPorEspecialidad()"
+            >
+              <mat-option
+                *ngFor="let especialidad of especialidades"
+                [value]="especialidad"
+              >
+                {{ especialidad }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
           <mat-accordion>
-            <mat-expansion-panel *ngFor="let registro of historia?.registros">
+            <mat-expansion-panel
+              *ngFor="
+                let registro of historia?.registros
+                  | filtrarPorEspecialidad : especialidadSeleccionada
+              "
+            >
               <div>
-                <h4>Registro</h4>
+                <h4>Registro de {{ registro.especialidad }}</h4>
+
+                <h5>Datos Fijos:</h5>
                 <p>
                   <strong>Altura:</strong>
                   {{ registro.datosFijos.altura }} cm
@@ -165,6 +190,15 @@
               </div>
             </mat-expansion-panel>
           </mat-accordion>
+          <mat-button
+            mat-raised-button
+            color="primary"
+            (click)="exportarHistoriaClinicaPDF(especialidadSeleccionada)"
+            class="export-btn"
+          >
+            <mat-icon>picture_as_pdf</mat-icon>
+            Exportar Historia Clínica
+          </mat-button>
         </div>
         <p *ngIf="!historia">No hay historias clínicas registradas.</p>
       </div>

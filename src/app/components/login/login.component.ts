@@ -89,6 +89,7 @@ export class LoginComponent {
       }
 
       if (userData.tipo === 'admin') {
+        this.registrarLog(userData);
         this.router.navigate(['/admin/users']);
         return;
       }
