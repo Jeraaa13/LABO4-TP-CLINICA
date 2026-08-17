@@ -1,110 +1,116 @@
-# Clínica OnLine - Sistema de Gestión
+# Clinica OnLine (Clinic Management System)
 
-## Descripción
+Health clinic management system with multiple specialties and services. Manages appointments,
+patients, specialists and admins through a web interface tailored to each user role (Patient,
+Specialist, Admin).
 
-La Clínica OnLine es un centro de salud con múltiples especialidades y servicios. El sistema permite gestionar turnos, pacientes, especialistas y administradores, todo desde una interfaz web accesible para cada tipo de usuario (Paciente, Especialista, Administrador).
+## Stack
 
-## Requerimientos
+Angular, Firebase (Auth + Firestore), responsive design.
 
-La clínica cuenta con:
+## Context
 
-- 6 consultorios.
-- 2 laboratorios físicos.
-- Sala de espera general.
-- Horario de atención: Lunes a Viernes de 8:00 a 19:00 y Sábados de 8:00 a 14:00.
+The clinic has:
 
-### Sprint 1: Registro, Login y Gestión de Usuarios
+- 6 consulting rooms
+- 2 physical labs
+- A general waiting room
+- Hours: Monday to Friday 8:00-19:00, Saturdays 8:00-14:00
 
-**Pantalla de Bienvenida**
+## Sprint 1: Registration, login and user management
 
-![Pantalla de Bienvenida](public/fotosReadme/bienvenida.png)
+**Welcome screen**
 
-En la página de bienvenida, los usuarios tienen acceso al login y registro del sistema. Desde aquí pueden acceder a sus perfiles de Paciente, Especialista o Administrador.
+![Welcome screen](public/fotosReadme/bienvenida.png)
 
-**Registro de Usuarios**
+From the welcome page, users can log in or register, then access their Patient, Specialist or
+Admin profile.
 
-- **Pacientes**: Nombre, Apellido, Edad, DNI, Obra Social, Mail, Password y 2 imágenes de perfil.
-- **Especialistas**: Nombre, Apellido, Edad, DNI, Especialidad, Mail, Password y Imagen de perfil.
+**User registration**
+
+- **Patients:** first name, last name, age, national ID, health insurance, email, password, and
+  2 profile pictures.
+- **Specialists:** first name, last name, age, national ID, specialty, email, password, and a
+  profile picture.
 
 **Login**
 
-- Los Especialistas sólo pueden ingresar si su cuenta fue aprobada por un Administrador.
-- Los Pacientes deben verificar su mail para ingresar al sistema.
+- Specialists can only log in once their account is approved by an Admin.
+- Patients must verify their email before logging in.
 
-**Gestión de Usuarios (Administrador)**
+**User management (Admin)**
 
-![Gestión de Usuarios](public/fotosReadme/gestion_usuarios.png)
+![User management](public/fotosReadme/gestion_usuarios.png)
 
-El Administrador puede ver y modificar los datos de los usuarios, habilitar o deshabilitar cuentas, y generar nuevos usuarios (incluyendo administradores).
+Admins can view and edit user data, enable/disable accounts, and create new users (including
+other admins).
 
-### Sprint 2: Gestión de Turnos
+## Sprint 2: Appointment management
 
-**Mis Turnos - Paciente**
+**My appointments - Patient**
 
-![Mis Turnos Paciente](public/fotosReadme/mis_turnos_paciente.png)
+![Patient appointments](public/fotosReadme/mis_turnos_paciente.png)
 
-Los pacientes pueden consultar sus turnos, cancelarlos (si no se han realizado), ver reseñas, completar encuestas o calificar la atención del especialista.
+Patients can check their appointments, cancel them (if not yet completed), view reviews, fill
+out surveys, or rate the specialist's care.
 
-**Mis Turnos - Especialista**
+**My appointments - Specialist**
 
-![Mis Turnos Especialista](public/fotosReadme/mis_turnos_especialista.png)
+![Specialist appointments](public/fotosReadme/mis_turnos_especialista.png)
 
-Los especialistas pueden gestionar los turnos asignados, aceptarlos, rechazarlos, cancelarlos o finalizar los mismos.
+Specialists can manage their assigned appointments: accept, reject, cancel, or mark them as
+completed.
 
-**Turnos - Administrador**
+**Appointments - Admin**
 
-![Turnos Administrador](public/fotosReadme/turnos_administrador.png)
+![Admin appointments](public/fotosReadme/turnos_administrador.png)
 
-Los administradores tienen acceso a todos los turnos de la clínica y pueden cancelarlos si no se han realizado, aceptarlos o rechazarlos.
+Admins can see every appointment in the clinic and cancel, accept, or reject any that haven't
+happened yet.
 
-**Solicitar Turno**
+**Requesting an appointment**
 
-![Solicitar Turno](public/fotosReadme/solicitar_turno.png)
+![Request appointment](public/fotosReadme/solicitar_turno.png)
 
-Los pacientes y administradores pueden solicitar nuevos turnos seleccionando especialidad, especialista, fecha y horario.
+Patients and admins can request new appointments by choosing a specialty, specialist, date and
+time slot.
 
-**Mi Perfil**
+**My profile**
 
-![Mi Perfil](public/fotosReadme/mi_perfil.png)
+![My profile](public/fotosReadme/mi_perfil.png)
 
-Cada usuario puede visualizar y editar su perfil, con su nombre, imagen y otros datos.
+Every user can view and edit their profile: name, picture, and other details.
 
-### Sprint 3: Historia Clínica
+## Sprint 3: Medical records
 
-**Historia Clínica - Paciente**
+**Medical record - Patient**
 
-![Historia Clínica Paciente](public/fotosReadme/historia_clinica_paciente.png)
+![Patient medical record](public/fotosReadme/historia_clinica_paciente.png)
 
-Los pacientes pueden consultar su historia clínica, la cual es cargada por los especialistas luego de cada consulta.
+Patients can view their medical record, which specialists fill in after each appointment.
 
-**Usuarios - Administrador**
+**Users - Admin**
 
-![Usuarios Administrador](public/fotosReadme/usuarios_administrador.png)
+![Admin user records](public/fotosReadme/usuarios_administrador.png)
 
-El Administrador tiene acceso completo a los datos de los pacientes y especialistas, y puede gestionar la historia clínica de los pacientes.
+Admins have full access to patient and specialist data and can manage patients' medical records.
 
-### Sprint 4: Informes y Estadísticas
+## Sprint 4: Reports and stats
 
-**Log de Ingresos**
+**Access log**
 
-![Log de Ingresos](public/fotosReadme/log_ingresos.png)
+![Access log](public/fotosReadme/log_ingresos.png)
 
-El Administrador puede consultar un log detallado con los ingresos al sistema, indicando el usuario y la fecha de acceso.
+Admins can view a detailed log of system logins, with user and access date.
 
-**Estadísticas de Turnos**
+**Appointment stats**
 
-![Estadísticas de Turnos](public/fotosReadme/estadisticas_turnos.png)
+![Appointment stats](public/fotosReadme/estadisticas_turnos.png)
 
-El Administrador puede consultar las estadísticas de los turnos, como la cantidad de turnos por especialidad, día, y por especialista.
+Admins can view appointment stats: counts by specialty, day, and specialist.
 
-## Funcionalidades Requeridas
+## Other features
 
-- **Captcha** en el registro de usuarios.
-- **Filtros avanzados** para búsqueda de turnos y datos de pacientes.
-- **Descarga de Informes** en formato Excel o PDF.
-
-## Requerimientos Técnicos
-
-- La aplicación está desarrollada con Angular y Firebase.
-- Utiliza Firestore para el almacenamiento de datos.
-- El diseño es responsive y accesible desde dispositivos móviles.
+- Captcha on user registration
+- Advanced filters for appointment and patient search
+- Report export as Excel or PDF
