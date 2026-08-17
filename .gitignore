@@ -46,3 +46,7 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+# Secrets
+.env
+recaptcha-backend/.env

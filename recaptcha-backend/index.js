@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const fetch = require("node-fetch");
 const cors = require("cors");
@@ -15,7 +16,7 @@ app.post("/verify-recaptcha", async (req, res) => {
 
   try {
     // Verificar el token con la API de reCAPTCHA de Google
-    const secretKey = "6LfyiIUqAAAAAOxE_k-F2jinnUXLlMo4PdYC0Zem"; // Usa tu clave secreta de reCAPTCHA
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
     const response = await fetch(
       `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`,
       {
